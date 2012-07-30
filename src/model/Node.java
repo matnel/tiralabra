@@ -34,6 +34,13 @@ public class Node {
 	}
 	
 	/**
+	 * Returns name.
+	 * */
+	public String name() {
+		return null;
+	}
+	
+	/**
 	 * Set n connected this node with the weight weight.
 	 * 
 	 * If the nodes were already connected, returns true and updates the weight, otherwise returns false.
