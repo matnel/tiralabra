@@ -19,6 +19,7 @@ public class Node {
 	 * @param name name of this node
 	 * */
 	public Node(String name) {
+		this.name = name;
 		// FIXME: use own implementation
 		neighbor = new HashMap<Node,Double>();
 	}
@@ -31,13 +32,14 @@ public class Node {
 	 * */
 	public Node(String name, Map<Node, Double> neighbors) {
 		this(name);
+		neighbor = neighbors;
 	}
 	
 	/**
 	 * Returns name.
 	 * */
 	public String name() {
-		return null;
+		return this.name;
 	}
 	
 	/**
@@ -50,7 +52,17 @@ public class Node {
 	 * @return true if the nodes were already connected, false otherwise
 	 **/
 	public boolean linkTo(Node n, double weight) {
-		return true;
+		// validate input
+		if( this.equals(n) ) {
+			throw new IllegalArgumentException("Can not link with one self");
+		}
+		if( weight < 0 ) {
+			throw new IllegalArgumentException("Negative ties are not allowed");
+		}
+		
+		Double value = neighbor.put(n, weight);
+
+		return value != null;
 	}
 	
 	
@@ -61,7 +73,7 @@ public class Node {
 	 * @return true if n is node's neighbor
 	 **/
 	public boolean linkTo(Node n) {
-		return false;
+		return neighbor.containsKey(n);
 	}
 	
 	/**
@@ -71,7 +83,10 @@ public class Node {
 	 * @return the link weight or -1
 	 * */
 	public double linkWeight(Node n) {
-		return -100;
+		if( linkTo(n) ) {
+			return neighbor.get(n);
+		}
+		return -1;
 	}
 	
 	/**
@@ -80,7 +95,7 @@ public class Node {
 	 * @return map of node's neigbbors and the weights.
 	 * */
 	public Map<Node,Double> neighbors() {
-		return null;
+		return neighbor;
 	}
 
 }
