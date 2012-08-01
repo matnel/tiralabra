@@ -11,6 +11,7 @@ import java.util.*;
 public class Graph {
 	
 	private List<Node> edges;
+	private List<String> edgeNames;
 	
 	/**
 	 * Default constructor, takes no parameters and sets the graph as empty.
@@ -18,6 +19,7 @@ public class Graph {
 	public Graph() {
 		// TODO: change to my own list implementation
 		edges = new ArrayList<Node>();
+		edgeNames = new ArrayList<String>();
 	}
 	
 
@@ -28,6 +30,15 @@ public class Graph {
 	 * @return true if successful
 	 * */
 	public boolean addNode(Node n) {
+		
+		// only add nodes with unique name
+		if( edgeNames.contains( n.name() )  ) {
+			return false;
+		}
+		
+		edges.add(n);
+		edgeNames.add(n.name());
+		
 		return true;
 	}
 	
@@ -37,14 +48,29 @@ public class Graph {
 	 * @return number of nodes
 	 **/
 	public int size() {
-		return -1;
+		return edges.size();
 	}
 	
 	/**
 	 * Returns the graph in a matrix format, by starting to cound from the first element in the node list.
 	 **/
-	public int[][] matrix() {
-		return null;
+	public double[][] matrix() {
+		int size = size();
+		double[][] res = new double[size][size];
+		
+		List<Node> edges = edges();
+		
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				res[i][j] = edges.get(i).linkWeight( edges.get(j) );
+				// check if checking the diagonal
+				if( i == j) {
+					res[i][j] = 0;
+				}
+			}
+		}
+		
+		return res;
 	}
 	
 	/**
@@ -53,7 +79,7 @@ public class Graph {
 	 * @retun true if n is part of the graph and f otherwise
 	 * */
 	public boolean has(Node n) {
-		return false;
+		return edges.contains(n);
 	}
 
 	/**
@@ -62,14 +88,14 @@ public class Graph {
 	 * @retun true if n is part of the graph and f otherwise
 	 * */
 	public boolean has(String name) {
-		return false;
+		return edgeNames.contains(name);
 	}
 	
 	/**
-	 * Returns the edges of this grap.
+	 * Returns the edges of this grap.,
 	 * **/
 	public List<Node> edges() {
-		return null;
+		return edges;
 	}
 	
 	// abstract Map shortestPaths();
