@@ -93,7 +93,7 @@ public class GraphTest {
 		
 		assertEquals("Graph with just one node should return 1x1 graph", 1, g.matrix().length );
 		assertEquals("Graph with just one node should return 1x1 graph", 1, g.matrix()[0].length );
-		assertEquals("Value to one self should be 0", 0, g.matrix()[0][0] );
+		assertEquals("Value to one self should be 0", 0, g.matrix()[0][0], 0.001 );
 		
 		nB.linkTo(nA, 5);
 		g.addNode( nB );
