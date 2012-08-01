@@ -79,7 +79,7 @@ public class GraphTest {
 		assertEquals("List not correct", list, g.edges() );
 		
 		g.addNode(nC);
-		list.add(nB);
+		list.add(nC);
 		assertEquals("List not correct", list, g.edges() );
 	}
 
