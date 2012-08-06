@@ -43,7 +43,9 @@ public class DataReader {
 			
 			double w = Double.parseDouble(split[2]);
 			
-			start.linkTo(end, w);
+			if( start.linkTo(end, w) ) {
+				throw new Exception("Tie alrady exists");
+			}
 		}
 		
 		Graph g = new Graph();

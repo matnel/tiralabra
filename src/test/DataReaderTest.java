@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Arrays;
 
 import io.DataReader;
 
@@ -41,28 +42,39 @@ public class DataReaderTest {
 		assertArrayEquals("Empty file should return correct object", result, g.matrix() );
 	}
 	
-	@Test(expected=Exception.class)
-	public void testReadNegativeValue() throws Exception {
-		String test = "a:b:-1";
-		Graph g = DataReader.readFile( createFile(test) );
-	}
-	
 	
 	@Test
 	public void testValidFile() throws Exception {
 		
-		String test = "a:b:10" + br + "a:c:100" + br + "b:a:5";
+		String test = "b:a:5" + br + "a:b:10" + br + "a:c:100";
 		
 		Graph g = DataReader.readFile( createFile(test) );
 		
-		double[][] result = { {0,10,100}, {5,0,-1}, {-1,-1,0} };
-		assertArrayEquals("Matrix not generated correctly", result, g.matrix() );
+		assertEquals("Item has incorrect name", "b", g.edges().get(0).name() );
+		assertEquals("Item has incorrect name", "c", g.edges().get(1).name() );
+		assertEquals("Item has incorrect name", "a", g.edges().get(2).name() );
 		
-		assertEquals("Item has incorrect name", "a", g.edges().get(0).name() );
-		assertEquals("Item has incorrect name", "b", g.edges().get(1).name() );
-		assertEquals("Item has incorrect name", "c", g.edges().get(2).name() );
+		double[][] result = { {0,-1,5}, {-1,0,-1}, {10,100,0} };
+		assertArrayEquals("Matrix not generated correctly", result, g.matrix() );
 	}
 	
+	@Test(expected=Exception.class)
+	public void testInvalid1() throws Exception {
+		String test = "a:b:c";
+		Graph g = DataReader.readFile( createFile(test) );
+	}
+	
+	@Test(expected=Exception.class)
+	public void testInvalid2() throws Exception {
+		String test = "a:b:-1";
+		Graph g = DataReader.readFile( createFile(test) );
+	}
+	
+	@Test(expected=Exception.class)
+	public void testInvalid3() throws Exception {
+		String test = "a:b:1" + br + "a:b:2";
+		Graph g = DataReader.readFile( createFile(test) );
+	}
 	
 
 }
