@@ -7,6 +7,12 @@ import model.*;
 
 public class DataReader {
 	
+	/**
+	 * Reads the file and generates a graph object from it.
+	 * 
+	 * @throws Exception if file is invalid
+	 * @return generated graph
+	 * */
 	public static Graph readFile(File f) throws Exception {
 		Map<String,Node> nodes = new HashMap<String,Node>();
 		
