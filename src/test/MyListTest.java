@@ -211,6 +211,16 @@ public class MyListTest {
 		list.remove(3);
 		assertEquals("New 3 should be Kissa", "Kissa", list.get(3) );
 	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testRemoveIntInvalid() {
+		list.remove(-1);
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testRemoveIntInvalid2() {
+		list.remove(0);
+	}
 
 	@Test
 	public void testRemoveAll() {
@@ -234,12 +244,38 @@ public class MyListTest {
 
 	@Test
 	public void testSet() {
-		fail("Not yet implemented");
+		list.add("Kissa");
+		list.add("Koira");
+		list.add("Koira");
+		list.add("Koira");
+		list.add("Kirahvi");
+		list.add("Kissa");
+		
+		list.set(1, "Kissa");
+		
+		assertEquals("Kissa should be at 1", "Kissa", list.get(1) );
+		assertEquals("List should be still same lenght", 6, list.size() );
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testSetInvalid2() {
+		list.set(0, "Kissa");
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testSetInvalid() {
+		list.set(-1, "Kissa");
 	}
 
 	@Test
 	public void testSize() {
-		fail("Not yet implemented");
+		assertEquals("Empty list should be size 0", 0, list.size() );
+		list.add("Kissa");
+		assertEquals("Empty list should be size 1", 1, list.size() );
+		list.add("Kissa");
+		assertEquals("Empty list should be size 2", 2, list.size() );
+		list.remove(0);
+		assertEquals("Empty list should be size 1", 1, list.size() );
 	}
 
 	@Test
