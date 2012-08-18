@@ -48,8 +48,6 @@ public class MyMap<K, V> implements Map<K, V> {
 		List<Bucket> buckets = new MyList<Bucket>();
 		for( int i = 0; i < map.length; i++ ) {
 			Bucket b = (Bucket) map[i];
-			System.out.print( i + " :");
-			System.out.println( b );
 			while( b != null ) {
 				buckets.add(b);
 				b = b.next;
@@ -120,7 +118,7 @@ public class MyMap<K, V> implements Map<K, V> {
 		if( b == null ) {
 			Bucket head = (Bucket) map[index];
 			Bucket newBucket = new Bucket(key, value);
-			newBucket.next = head.next
+			newBucket.next = head.next;
 			head.next = newBucket;
 			count++;
 			return null;
