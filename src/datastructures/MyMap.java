@@ -130,19 +130,6 @@ public class MyMap<K, V> implements Map<K, V> {
 	}
 	
 	@Override
-	public Collection<V> values() {
-		Collection<V> values = new MyList<V>();
-		for(int i = 0; i < map.length; i++) {		
-			// map[i] is a bucket
-			Bucket b = (Bucket) map[i];
-			if( b != null ) {
-				values.addAll( b.values() );
-			}
-		}
-		return values;
-	}
-	
-	@Override
 	public V remove(Object key) {
 		Bucket b = getBucket( (K) key);
 		if( b == null ) {
@@ -175,27 +162,48 @@ public class MyMap<K, V> implements Map<K, V> {
 	
 	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		return null;
+		// TODO: implement TreeSet!
+		Set<java.util.Map.Entry<K, V>> set = new TreeSet<java.util.Map.Entry<K, V>>();
+		for( Bucket b : allBuckets() ) {
+			set.add( b );
+		}
+		return set;
+	}
+
+	// OVERRIDED, not special implementations
+	
+	@Override
+	public Collection<V> values() {
+		Collection<V> values = new MyList<V>();
+		for( Map.Entry<K, V> entry : entrySet() ) {
+			values.add( entry.getValue() );
+		}
+		return values;
+		/* could be, but no significant improvment in O(n)
+		Collection<V> values = new MyList<V>();
+		for(int i = 0; i < map.length; i++) {		
+			// map[i] is a bucket
+			Bucket b = (Bucket) map[i];
+			if( b != null ) {
+				values.addAll( b.values() );
+			}
+		}
+		return values;
+		*/
 	}
 	
 	@Override
 	public Set<K> keySet() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<K> keys = new TreeSet<K>();
+		for( Map.Entry<K, V> entry : entrySet() ) {
+			keys.add( entry.getKey() );
+		}
+		return keys;
 	}
-
-	// OVERRIDED, not special implementations
 
 	@Override
 	public boolean containsKey(Object key) {
-		try {
-			get(key);
-			return true;
-		}
-		// todo: check correct type of exception from getBucket 
-		catch(Exception E){
-			return false;
-		}
+		return keySet().contains(key);
 	}
 
 	@Override
@@ -220,7 +228,7 @@ public class MyMap<K, V> implements Map<K, V> {
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		for( java.util.Map.Entry<? extends K, ? extends V> e : m.entrySet() ) {
+		for( Map.Entry<? extends K, ? extends V> e : m.entrySet() ) {
 			put( e.getKey(), e.getValue() );
 		}
 	}
