@@ -45,7 +45,7 @@ public class MyListTest {
 		assertEquals("Koira should be at 0", "Koira", list.get(0) );
 		assertEquals("Koira should be at 5", "Koira", list.get(5) );
 		assertEquals("Koira should be at 10", "Koira", list.get(10) );
-		// assertEquals("List should have 103 elements", 103, list.size() );
+		assertEquals("List should have 103 elements", 103, list.size() );
 	}
 
 	@Test
