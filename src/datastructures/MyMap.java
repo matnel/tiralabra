@@ -71,6 +71,8 @@ public class MyMap<K, V> implements Map<K, V> {
 
 	@Override
 	public boolean containsValue(Object value) {
+		return values().contains(value);
+		/* could bem but this is O(n) anyway)
 		V v = (V) value;
 		for( int i = 0; i < map.length; i++ ) {
 			if( map[i] != null ) {
@@ -79,6 +81,7 @@ public class MyMap<K, V> implements Map<K, V> {
 			}
 		}
 		return false;
+		*/
 	}
 
 	@Override
@@ -178,6 +181,8 @@ public class MyMap<K, V> implements Map<K, V> {
 
 	@Override
 	public int size() {
+		return values().size();
+		/* could be, but this is also O(n)
 		int size = 0;
 		for(int i = 0; i < map.length; i++) {		
 			// map[i] is a bucket
@@ -187,6 +192,7 @@ public class MyMap<K, V> implements Map<K, V> {
 			}
 		}
 		return size;
+		*/
 	}
 
 	@Override
