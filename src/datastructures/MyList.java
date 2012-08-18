@@ -203,10 +203,10 @@ public class MyList<E> implements List<E> {
 
 	@Override
 	public boolean removeAll(Collection<?> arg0) {
-		boolean state = true;
+		boolean state = false;
 		for(Object o : arg0) {
-			if( ! remove(o) ) {
-				state = false;
+			if( remove(o) ) {
+				state = true;
 			}
 		}
 		return state;
