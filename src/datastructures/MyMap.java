@@ -36,7 +36,7 @@ public class MyMap<K, V> implements Map<K, V> {
 	 * @return index where k should be stored in map
 	 * */
 	private int hash(K key) {
-		return -1;
+		return key.hashCode() % map.length;
 	}
 	
 	/**
