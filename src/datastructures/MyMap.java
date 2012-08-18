@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class MyMap<K, V> implements Map<K, V> {
 	
@@ -171,6 +172,17 @@ public class MyMap<K, V> implements Map<K, V> {
 		return bb.value;
 		
 	}
+	
+	@Override
+	public Set<java.util.Map.Entry<K, V>> entrySet() {
+		return null;
+	}
+	
+	@Override
+	public Set<K> keySet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	// OVERRIDED, not special implementations
 
@@ -202,20 +214,8 @@ public class MyMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
-	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public Set<K> keySet() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -245,7 +245,7 @@ public class MyMap<K, V> implements Map<K, V> {
 	 * Map contains Buckets. Each bucket is a linked list, i.e. it has a value and next item of the list.
 	 * It also stores the key of each entry in a bucket.
 	 * */
-	private class Bucket {
+	private class Bucket implements Map.Entry {
 		
 		K key;
 		V value;
@@ -290,6 +290,23 @@ public class MyMap<K, V> implements Map<K, V> {
 				current = current.next;
 			}
 			return null;
+		}
+
+		@Override
+		public Object getKey() {
+			return this.key;
+		}
+
+		@Override
+		public Object getValue() {
+			return this.value;
+		}
+
+		@Override
+		public Object setValue(Object value) {
+			Object old = this.value;
+			this.value = (V) value;
+			return old;
 		}
 		
 	}
