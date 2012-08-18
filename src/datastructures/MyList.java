@@ -243,8 +243,9 @@ public class MyList<E> implements List<E> {
 	public int size() {
 		int size = 0;
 		Element<E> current = first.next;
-		while( current.next != null ) {
+		while( current != null ) {
 			size++;
+			current = current.next;
 		}
 		return size;
 	}
