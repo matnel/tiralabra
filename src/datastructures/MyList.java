@@ -42,14 +42,24 @@ public class MyList<E> implements List<E> {
 		}
 		// otherwise, always take the last element
 		addAfter( last, e);
+		// update the location of last element
+		last = e;
 		return true;
 	}
 
 	@Override
 	public void add(int index, E value) {
+		index = index - 1;
+		Element<E> newValue = new Element<E>(value);
+		
+		if( index == -1 ) {
+			// set as first element
+			newValue.next = first.next;
+			first.next = newValue;
+			return;
+		}
 		Element target = getElement(index);
-		Element<E> temp = new Element<E>(value);
-		addAfter(target, temp);
+		addAfter(target, newValue);
 	}
 
 	@Override
