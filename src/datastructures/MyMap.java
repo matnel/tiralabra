@@ -11,7 +11,7 @@ public class MyMap<K, V> implements Map<K, V> {
 	/**
 	 * Initial size of the map
 	 * */
-	private static int INITIAL_SIZE = 50;
+	private static int INITIAL_SIZE = 10;
 	
 	/**
 	 * At what stage should the system be rehased
@@ -48,6 +48,8 @@ public class MyMap<K, V> implements Map<K, V> {
 		List<Bucket> buckets = new MyList<Bucket>();
 		for( int i = 0; i < map.length; i++ ) {
 			Bucket b = (Bucket) map[i];
+			System.out.print( i + " :");
+			System.out.println( b );
 			while( b != null ) {
 				buckets.add(b);
 				b = b.next;
@@ -78,6 +80,7 @@ public class MyMap<K, V> implements Map<K, V> {
 	private Bucket getBucket(K key) {
 		// check which bucket to return
 		Bucket current = (Bucket) map[ hash(key) ];
+		if( current == null ) return null;
 		return current.getBucket(key);
 	}
 
@@ -102,30 +105,29 @@ public class MyMap<K, V> implements Map<K, V> {
 	@Override
 	public V put(K key, V value) {
 		// check if we need to rehash
-		if( count / map.length < REHASH_TRESHOLD  ) {
+		if( count / map.length > REHASH_TRESHOLD  ) {
 			rehash();
 		}
 		Bucket b = getBucket(key);
+		int index = hash( key );
 		// check if there's any value we could add
-		if( b == null ) {
-			int index = hash( key );
-			Bucket newBucket = new Bucket(key, value);
+		if( map[index] == null ) {
+			map[index] = new Bucket(key, value);
 			count++;
 			return null;
 		}
-		// check that there's no chained values there
-		Bucket bucket = b.getBucket(key);
 		// chain if needed
-		if( bucket == null ) {
-			Bucket temp = b.next;
-			b.next = new Bucket(key, value);
-			b.next.next = temp;
+		if( b == null ) {
+			Bucket head = (Bucket) map[index];
+			Bucket newBucket = new Bucket(key, value);
+			newBucket.next = head.next
+			head.next = newBucket;
 			count++;
 			return null;
 		}
 		// we already have the value, just store
-		V old = bucket.value;
-		bucket.value = value;
+		V old = b.value;
+		b.value = value;
 		return old;
 	}
 	
@@ -164,6 +166,7 @@ public class MyMap<K, V> implements Map<K, V> {
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
 		// TODO: implement TreeSet!
 		Set<java.util.Map.Entry<K, V>> set = new TreeSet<java.util.Map.Entry<K, V>>();
+		System.out.println( allBuckets() );
 		for( Bucket b : allBuckets() ) {
 			set.add( b );
 		}
