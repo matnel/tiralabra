@@ -157,6 +157,9 @@ public class MyMap<K, V> implements Map<K, V> {
 			// we do not have value, thow ex
 			return null;
 		}
+		// remove count 
+		count--;
+		
 		// we have value, remove nicely
 		// we have an only one value in this bucket, remove from map
 		if( b == bb ) {
