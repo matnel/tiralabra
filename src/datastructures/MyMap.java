@@ -7,7 +7,14 @@ import java.util.Set;
 
 public class MyMap<K, V> implements Map<K, V> {
 	
+	/**
+	 * Initial size of the map
+	 * */
 	private static int INITIAL_SIZE = 50;
+	
+	/**
+	 * At what stage should the system be rehased
+	 * */
 	private static double REHASH_TRESHOLD = 0.9;
 	
 	/**
@@ -15,12 +22,27 @@ public class MyMap<K, V> implements Map<K, V> {
 	 * */
 	private int count = 0;
 	
+	/**
+	 * The map storing all items.
+	 * */
 	private Object[] map = new Object[ INITIAL_SIZE ];
 	
+	// PRIVATE help functions
+	
+	/**
+	 * Returns the index where key should be stored.
+	 * 
+	 * @return index where k should be stored in map
+	 * */
 	private int hash(K key) {
 		return -1;
 	}
 	
+	/**
+	 * Returns all buckets stored in the map. I.e. all keys and values stored in the system.
+	 * 
+	 * @return all buckets stored in the map
+	 * */
 	private List<Bucket> allBuckets() {
 		List<Bucket> buckets = new MyList<Bucket>();
 		for( int i = 0; i < map.length; i++ ) {
@@ -33,6 +55,10 @@ public class MyMap<K, V> implements Map<K, V> {
 		return buckets;
 	}
 	
+	/**
+	 * Rehashes the map. Increases the map's size by factor of two and stores all values stored in the map
+	 * to the new larged map.
+	 * */
 	private void rehash() {
 		// get all data
 		List<Bucket> buckets = allBuckets();
@@ -44,18 +70,109 @@ public class MyMap<K, V> implements Map<K, V> {
 			put( b.key, b.value );
 		}
 	}
+	
+	/**
+	 * Get's the Bucket for key. A bucket stores information of key, value and potentially next linked item.
+	 * */
+	private Bucket getBucket(K key) {
+		// check which bucket to return
+		Bucket current = (Bucket) map[ hash(key) ];
+		return current.getBucket(key);
+	}
 
+	// OVERRIDED, actual implementation
+	
 	@Override
 	public void clear() {
 		map = new Object[ INITIAL_SIZE ];
 		count = 0;
 	}
 	
-	private Bucket getBucket(K key) {
-		// check which bucket to return
-		Bucket current = (Bucket) map[ hash(key) ];
-		return current.getBucket(key);
+	@Override
+	public V get(Object key) {
+		Bucket correct = getBucket( (K) key );
+		if( correct != null ) {
+			return getBucket( (K) key ).value;
+		}
+		// throw exception?
+		return null;
 	}
+	
+	@Override
+	public V put(K key, V value) {
+		// check if we need to rehash
+		if( count / map.length < REHASH_TRESHOLD  ) {
+			rehash();
+		}
+		Bucket b = getBucket(key);
+		// check if there's any value we could add
+		if( b == null ) {
+			int index = hash( key );
+			Bucket newBucket = new Bucket(key, value);
+			count++;
+			return null;
+		}
+		// check that there's no chained values there
+		Bucket bucket = b.getBucket(key);
+		// chain if needed
+		if( bucket == null ) {
+			Bucket temp = b.next;
+			b.next = new Bucket(key, value);
+			b.next.next = temp;
+			count++;
+			return null;
+		}
+		// we already have the value, just store
+		V old = bucket.value;
+		bucket.value = value;
+		return old;
+	}
+	
+	@Override
+	public Collection<V> values() {
+		Collection<V> values = new MyList<V>();
+		for(int i = 0; i < map.length; i++) {		
+			// map[i] is a bucket
+			Bucket b = (Bucket) map[i];
+			if( b != null ) {
+				values.addAll( b.values() );
+			}
+		}
+		return values;
+	}
+	
+	@Override
+	public V remove(Object key) {
+		Bucket b = getBucket( (K) key);
+		if( b == null ) {
+			// we do not have value, thow ex
+			return null;
+		}
+		Bucket bb = b.getBucket( (K) key );
+		if( bb == null ) {
+			// we do not have value, thow ex
+			return null;
+		}
+		// remove count 
+		count--;
+		
+		// we have value, remove nicely
+		// we have an only one value in this bucket, remove from map
+		if( b == bb ) {
+			map[ hash( (K) key ) ] = null;
+		} else {
+			// search for the bucket that's just before bb
+			while( b.next != bb ) {
+				b = b.next;
+			}
+			// connect the two chains and drop bb
+			b.next = bb.next;
+		}
+		return bb.value;
+		
+	}
+
+	// OVERRIDED, not special implementations
 
 	@Override
 	public boolean containsKey(Object key) {
@@ -91,16 +208,6 @@ public class MyMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
-	public V get(Object key) {
-		Bucket correct = getBucket( (K) key );
-		if( correct != null ) {
-			return getBucket( (K) key ).value;
-		}
-		// throw exception?
-		return null;
-	}
-
-	@Override
 	public boolean isEmpty() {
 		return size() == 0;
 	}
@@ -112,71 +219,10 @@ public class MyMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
-	public V put(K key, V value) {
-		// check if we need to rehash
-		if( count / map.length < REHASH_TRESHOLD  ) {
-			rehash();
-		}
-		Bucket b = getBucket(key);
-		// check if there's any value we could add
-		if( b == null ) {
-			int index = hash( key );
-			Bucket newBucket = new Bucket(key, value);
-			count++;
-			return null;
-		}
-		// check that there's no chained values there
-		Bucket bucket = b.getBucket(key);
-		// chain if needed
-		if( bucket == null ) {
-			Bucket temp = b.next;
-			b.next = new Bucket(key, value);
-			b.next.next = temp;
-			count++;
-			return null;
-		}
-		// we already have the value, just store
-		V old = bucket.value;
-		bucket.value = value;
-		return old;
-	}
-
-	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
 		for( java.util.Map.Entry<? extends K, ? extends V> e : m.entrySet() ) {
 			put( e.getKey(), e.getValue() );
 		}
-	}
-
-	@Override
-	public V remove(Object key) {
-		Bucket b = getBucket( (K) key);
-		if( b == null ) {
-			// we do not have value, thow ex
-			return null;
-		}
-		Bucket bb = b.getBucket( (K) key );
-		if( bb == null ) {
-			// we do not have value, thow ex
-			return null;
-		}
-		// remove count 
-		count--;
-		
-		// we have value, remove nicely
-		// we have an only one value in this bucket, remove from map
-		if( b == bb ) {
-			map[ hash( (K) key ) ] = null;
-		} else {
-			// search for the bucket that's just before bb
-			while( b.next != bb ) {
-				b = b.next;
-			}
-			// connect the two chains and drop bb
-			b.next = bb.next;
-		}
-		return bb.value;
-		
 	}
 
 	@Override
@@ -194,20 +240,11 @@ public class MyMap<K, V> implements Map<K, V> {
 		return size;
 		*/
 	}
-
-	@Override
-	public Collection<V> values() {
-		Collection<V> values = new MyList<V>();
-		for(int i = 0; i < map.length; i++) {		
-			// map[i] is a bucket
-			Bucket b = (Bucket) map[i];
-			if( b != null ) {
-				values.addAll( b.values() );
-			}
-		}
-		return values;
-	}
 	
+	/**
+	 * Map contains Buckets. Each bucket is a linked list, i.e. it has a value and next item of the list.
+	 * It also stores the key of each entry in a bucket.
+	 * */
 	private class Bucket {
 		
 		K key;
