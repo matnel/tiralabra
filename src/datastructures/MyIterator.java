@@ -1,66 +1,72 @@
 package datastructures;
 
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
-public class MyIterator<E> implements ListIterator<E> {
+public class MyIterator<E> implements ListIterator<E>  {
+	
+	private List<E> list = new MyList<E>();
+	private int index = 0;
+	private E previous;
+	private E current;
 	
 	public MyIterator(List <E> list) {
-		
-	}
-
-	@Override
-	public void add(E e) {
-		// TODO Auto-generated method stub
-		
+		// copy list for this iterator
+		for(int i = 0; i < list.size(); i++ ) {
+			this.list.add( list.get(i) );
+		}
 	}
 
 	@Override
 	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean hasPrevious() {
-		// TODO Auto-generated method stub
-		return false;
+		return ! list.isEmpty();
 	}
 
 	@Override
 	public E next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int nextIndex() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public E previous() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int previousIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+		if( ! hasNext() ) {
+			throw new NoSuchElementException();
+		}
+		previous = current;
+		current = list.remove(0);
+		index++;
+		return current;
 	}
 
 	@Override
 	public void remove() {
-		// TODO Auto-generated method stub
-		
+		// TODO: bucnh of exceptions to be thrown?
+		list.remove(0);
 	}
 
 	@Override
-	public void set(E e) {
-		// TODO Auto-generated method stub
-		
+	public void add(E arg0) {
+		list.add(arg0);
+	}
+
+	@Override
+	public boolean hasPrevious() {
+		System.out.println( previous );
+		return previous != null;
+	}
+
+	@Override
+	public int nextIndex() {
+		return index + 1;
+	}
+
+	@Override
+	public E previous() {
+		return previous;
+	}
+
+	@Override
+	public int previousIndex() {
+		return index - 1;
+	}
+
+	@Override
+	public void set(E arg0) {
+		// TODO: add me
 	}
 
 }

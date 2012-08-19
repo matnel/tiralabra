@@ -1,5 +1,6 @@
 package datastructures;
 
+import java.util.Collection;
 import java.util.Set;
 
 /** Set is a spesific kind of list where values can be stored only once
@@ -17,6 +18,20 @@ public class MySet<E> extends MyList<E> implements Set<E> {
 	}
 	
 	public void add(int index, E element) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public boolean addAll(Collection<? extends E> elements) {
+		boolean ok = false;
+		for(E e : elements) {
+			if( add(e) ) {
+				ok = true;
+			}
+		}
+		return ok;
+	}
+	
+	public boolean addAll(int index, Collection<? extends E> elements) {
 		throw new UnsupportedOperationException();
 	}
 	
