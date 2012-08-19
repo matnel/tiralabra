@@ -47,7 +47,8 @@ public class MyMap<K, V> implements Map<K, V> {
 	 * @return all buckets stored in the map
 	 * */
 	private List<Bucket> allBuckets() {
-		List<Bucket> buckets = new ArrayList<Bucket>(); // new MyList<Bucket>();
+		// TODO: Fixme
+		List<Bucket> buckets = new MyList<Bucket>(); // new ArrayList<Bucket>(); // 
 		for( int i = 0; i < map.length; i++ ) {
 			Bucket b = (Bucket) map[i];
 			while( b != null ) {

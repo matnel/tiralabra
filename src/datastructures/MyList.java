@@ -32,7 +32,6 @@ public class MyList<E> implements List<E> {
 
 	@Override
 	public boolean add(E value) {
-		// TODO: check return values
 		Element<E> e = new Element<E>(value);
 		// adding first element
 		if( last == null ) {
@@ -132,8 +131,7 @@ public class MyList<E> implements List<E> {
 
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyIterator<E>(this);
 	}
 
 	@Override
@@ -153,14 +151,12 @@ public class MyList<E> implements List<E> {
 
 	@Override
 	public ListIterator<E> listIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyIterator<E>(this);
 	}
 
 	@Override
-	public ListIterator<E> listIterator(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public ListIterator<E> listIterator(int first) {
+		return new MyIterator<E>( subList( first, size() ) );
 	}
 
 	@Override
