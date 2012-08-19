@@ -12,7 +12,7 @@ public abstract class ShortestPathGraph extends Graph {
 	 * 
 	 * @param from the node from where the calculation is started.
 	 * @param to node where the path leads
-	 * @return double return the shortest distance between nodes from and to
+	 * @return double return the shortest distance between nodes from and to or Integer.MIN_VALUE, if no such path exists.
 	 * */
 	public abstract double distance(Node from, Node to);
 	
@@ -21,7 +21,7 @@ public abstract class ShortestPathGraph extends Graph {
 	 * 
 	 * @param from the node from where the calculation is started.
 	 * @param to node where the path leads
-	 * @return list of nodes, including from and to, that create the shortest path between from and to
+	 * @return list of nodes, including from and to, that create the shortest path between from and to, or an empty list, if no such path exists.
 	 * */
 	public abstract List<Node> path(Node from, Node to);
 	
