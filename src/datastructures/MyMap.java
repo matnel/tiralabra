@@ -1,12 +1,6 @@
 package datastructures;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class MyMap<K, V> implements Map<K, V> {
 	
@@ -47,8 +41,7 @@ public class MyMap<K, V> implements Map<K, V> {
 	 * @return all buckets stored in the map
 	 * */
 	private List<Bucket> allBuckets() {
-		// TODO: Fixme
-		List<Bucket> buckets = new MyList<Bucket>(); // new ArrayList<Bucket>(); // 
+		List<Bucket> buckets = new MyList<Bucket>();
 		for( int i = 0; i < map.length; i++ ) {
 			Bucket b = (Bucket) map[i];
 			while( b != null ) {
@@ -164,9 +157,9 @@ public class MyMap<K, V> implements Map<K, V> {
 	}
 	
 	@Override
-	public Set<java.util.Map.Entry<K, V>> entrySet() {
+	public Set<Map.Entry<K, V>> entrySet() {
 		// TODO: implement Set
-		Set<java.util.Map.Entry<K, V>> set = new HashSet<java.util.Map.Entry<K, V>>();
+		Set<Map.Entry<K, V>> set = new MySet<Map.Entry<K, V>>();
 		for( Bucket b : allBuckets() ) {
 			set.add( b );
 		}
