@@ -86,6 +86,18 @@ public class ShortestPathGraphTest {
 	}
 	
 	public void testNextTo() {
+		List<Node> links;
+		for( Node central : nodes.values() ) {
+			for( Map.Entry<Node, Double> target : central.neighbors().entrySet() ) {
+				assertEquals("The distance between neigbour nodes is incorrect", target.getValue().doubleValue(), graph.distance( central, target.getKey() ) );
+				links = new ArrayList<Node>();
+				links.add( central );
+				links.add( target.getKey() );
+				
+				assertEquals("The shortest path between neigbours goes troug them", links, graph.path(central, target.getKey() ) );
+				
+			}
+		}
 		
 	}
 
