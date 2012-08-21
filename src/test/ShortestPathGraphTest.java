@@ -1,6 +1,7 @@
 package test;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ public class ShortestPathGraphTest {
 	
 	ShortestPathGraph graph = new AStarPathGraph();
 	
-	HashMap<Integer,Node> nodes = new HashMap<integer,Node>();
+	HashMap<Integer,Node> nodes = new HashMap<Integer,Node>();
 
 	@Before
 	public void setUp() throws Exception {
@@ -64,6 +65,7 @@ public class ShortestPathGraphTest {
 	public void tearDown() throws Exception {
 	}
 	
+	@Test
 	public void testUnconnected() {	
 		// element 0 is the unconnected
 		Node zero = nodes.get(0);
@@ -77,6 +79,7 @@ public class ShortestPathGraphTest {
 		}
 	}
 	
+	@Test
 	public void testUnidirected() {
 		Node from = nodes.get(12);
 		Node to = nodes.get(11);
@@ -85,6 +88,7 @@ public class ShortestPathGraphTest {
 		assertEquals("Path from 11 to 12 should not be there", 1, graph.distance(to, from) );
 	}
 	
+	@Test
 	public void testNextTo() {
 		List<Node> links;
 		for( Node central : nodes.values() ) {
@@ -98,6 +102,60 @@ public class ShortestPathGraphTest {
 				
 			}
 		}
+		
+	}
+	
+	@Test
+	public void testPaths1() {
+		
+		List<Node> correct = new ArrayList<Node>();
+		Node from = nodes.get(1);
+		Node to = nodes.get(5);
+		
+		assertEquals("Distance from 1 to 5 incorrect", 4, graph.distance(from, to) );
+		
+		correct.add( from );
+		correct.add( nodes.get(4) );
+		correct.add( nodes.get(8) );
+		correct.add( to );
+		
+		assertEquals("The path from 1 to 5 incorrect", correct, graph.path(from, to) );
+		
+	}
+	
+	public void testPaths2() {
+		
+		List<Node> correct = new ArrayList<Node>();
+		Node from = nodes.get(5);
+		Node to = nodes.get(6);
+		
+		assertEquals("Distance from 5 to 6 incorrect", 8, graph.distance(from, to) );
+		
+		correct.add( from );
+		correct.add( nodes.get(2) );
+		correct.add( nodes.get(3) );
+		correct.add( to );
+		
+		assertEquals("The path from 5 to 6 incorrect", correct, graph.path(from, to) );
+		
+	}
+	
+	
+	public void testPaths3() {
+		
+		List<Node> correct = new ArrayList<Node>();
+		Node from = nodes.get(1);
+		Node to = nodes.get(11);
+		
+		assertEquals("Distance from 1 to 11 incorrect", 6, graph.distance(from, to) );
+		
+		correct.add( from );
+		correct.add( nodes.get(2) );
+		correct.add( nodes.get(3) );
+		correct.add( nodes.get(5) );
+		correct.add( to );
+		
+		assertEquals("The path from 1 to 11 incorrect", correct, graph.path(from, to) );
 		
 	}
 
