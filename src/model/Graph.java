@@ -1,6 +1,7 @@
 package model;
 
 import java.util.*;
+import datastructures.*;
 
 /**
  * Represents one graph including all nodes in the graph.
@@ -17,9 +18,8 @@ public class Graph {
 	 * Default constructor, takes no parameters and sets the graph as empty.
 	 **/
 	public Graph() {
-		// TODO: change to my own list implementation
-		edges = new ArrayList<Node>();
-		edgeNames = new ArrayList<String>();
+		edges = new MyList<Node>();
+		edgeNames = new MyList<String>();
 	}
 	
 
@@ -92,7 +92,7 @@ public class Graph {
 	}
 	
 	/**
-	 * Returns the edges of this grap.,
+	 * Returns the edges of this graph.
 	 * **/
 	public List<Node> edges() {
 		return edges;
