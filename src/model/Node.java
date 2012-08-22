@@ -1,6 +1,7 @@
 package model;
 
 import java.util.*;
+import datastructures.*;
 
 /**
  * Represents one edge in the graph.
@@ -20,8 +21,7 @@ public class Node {
 	 * */
 	public Node(String name) {
 		this.name = name;
-		// FIXME: use own implementation
-		neighbor = new HashMap<Node,Double>();
+		neighbor = new MyMap<Node,Double>();
 	}
 
 	/**
