@@ -63,14 +63,14 @@ public class MyList<E> implements List<E> {
 
 	@Override
 	public boolean addAll(Collection<? extends E> arg0) {
-		int last = size() - 1;
-		return addAll( last, arg0 );
-		/* could be, but same O(n)
+		// TODO: fixme, when list is empty, this won't work!
+		// int last = size() - 1;
+		// return addAll( last, arg0 );
+		// could be, but same O(n)
 		for(E e : arg0) {
 			this.add(e);
 		}
 		return false;
-		*/
 	}
 
 	@Override
