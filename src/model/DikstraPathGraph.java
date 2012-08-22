@@ -16,7 +16,7 @@ public class DikstraPathGraph extends ShortestPathGraph {
 		Map<Node,Double> distances = new MyMap<Node, Double>();
 		
 		for( Node n : edges() ) {
-			distances.put( n, - Double.MAX_VALUE );
+			distances.put( n, INFINITY );
 		}
 		
 		// set current node is zero distance
@@ -39,7 +39,7 @@ public class DikstraPathGraph extends ShortestPathGraph {
 				}
 				
 				// special case, there is no previous path to n, update!
-				if( distances.get( n ) == - Double.MAX_VALUE ) {
+				if( distances.get( n ) == INFINITY ) {
 					distances.put( n, candidate );
 				}
 			}
