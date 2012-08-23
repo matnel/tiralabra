@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class ShortestPathGraphTest {
 	
-	ShortestPathGraph graph = new AStarPathGraph();
+	ShortestPathGraph graph = new DikstraPathGraph();
 	
 	HashMap<Integer,Node> nodes = new HashMap<Integer,Node>();
 
@@ -65,6 +65,7 @@ public class ShortestPathGraphTest {
 	public void tearDown() throws Exception {
 	}
 	
+	
 	@Test
 	public void testUnconnected() {	
 		// element 0 is the unconnected
@@ -72,8 +73,8 @@ public class ShortestPathGraphTest {
 		Collection<Node> others = nodes.values();
 		others.remove(zero);
 		for(Node n : others ) {
-			assertEquals("Node 0 is not connected", Integer.MIN_VALUE, graph.distance(zero, n) );
-			assertEquals("Node 0 is not connected", Integer.MIN_VALUE, graph.distance(n, zero) );
+			assertEquals("Node 0 is not connected", ShortestPathGraph.INFINITY , graph.distance(zero, n) , 0.01 );
+			assertEquals("Node 0 is not connected", ShortestPathGraph.INFINITY, graph.distance(n, zero) , 0.01 );
 			assertTrue("There can not be connection between 0 and " + n, graph.path(zero, n).isEmpty() );
 			assertTrue("There can not be connection between " + n + " and 0", graph.path(n, zero).isEmpty() );
 		}
@@ -84,8 +85,8 @@ public class ShortestPathGraphTest {
 		Node from = nodes.get(12);
 		Node to = nodes.get(11);
 		
-		assertEquals("Path from 12 to 11 should be there", 1, graph.distance(from, to) );
-		assertEquals("Path from 11 to 12 should not be there", 1, graph.distance(to, from) );
+		assertEquals("Path from 12 to 11 should be there", 1 , graph.distance(from, to) , 0.01 );
+		assertEquals("Path from 11 to 12 should not be there", ShortestPathGraph.INFINITY , graph.distance(to, from) , 0.01 );
 	}
 	
 	@Test
@@ -93,7 +94,7 @@ public class ShortestPathGraphTest {
 		List<Node> links;
 		for( Node central : nodes.values() ) {
 			for( Map.Entry<Node, Double> target : central.neighbors().entrySet() ) {
-				assertEquals("The distance between neigbour nodes is incorrect", target.getValue().doubleValue(), graph.distance( central, target.getKey() ) );
+				assertEquals("The distance between neigbour nodes is incorrect", target.getValue().doubleValue(), graph.distance( central, target.getKey() ) , 0.01 );
 				links = new ArrayList<Node>();
 				links.add( central );
 				links.add( target.getKey() );
@@ -112,7 +113,7 @@ public class ShortestPathGraphTest {
 		Node from = nodes.get(1);
 		Node to = nodes.get(5);
 		
-		assertEquals("Distance from 1 to 5 incorrect", 4, graph.distance(from, to) );
+		assertEquals("Distance from 1 to 5 incorrect", 4, graph.distance(from, to) , 0.01 );
 		
 		correct.add( from );
 		correct.add( nodes.get(4) );
@@ -123,13 +124,14 @@ public class ShortestPathGraphTest {
 		
 	}
 	
+	@Test
 	public void testPaths2() {
 		
 		List<Node> correct = new ArrayList<Node>();
 		Node from = nodes.get(5);
 		Node to = nodes.get(6);
 		
-		assertEquals("Distance from 5 to 6 incorrect", 8, graph.distance(from, to) );
+		assertEquals("Distance from 5 to 6 incorrect", 8, graph.distance(from, to) , 0.01 );
 		
 		correct.add( from );
 		correct.add( nodes.get(2) );
@@ -140,14 +142,14 @@ public class ShortestPathGraphTest {
 		
 	}
 	
-	
+	@Test
 	public void testPaths3() {
 		
 		List<Node> correct = new ArrayList<Node>();
 		Node from = nodes.get(1);
 		Node to = nodes.get(11);
 		
-		assertEquals("Distance from 1 to 11 incorrect", 6, graph.distance(from, to) );
+		assertEquals("Distance from 1 to 11 incorrect", 6, graph.distance(from, to) , 0.01 );
 		
 		correct.add( from );
 		correct.add( nodes.get(2) );
