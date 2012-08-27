@@ -162,7 +162,7 @@ public class ShortestPathGraphTest {
 		correct.add( from );
 		correct.add( nodes.get(2) );
 		correct.add( nodes.get(3) );
-		correct.add( nodes.get(5) );
+		correct.add( nodes.get(6) );
 		correct.add( to );
 		
 		Iterator<Node> correctI = correct.iterator();
