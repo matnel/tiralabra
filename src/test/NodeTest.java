@@ -104,7 +104,7 @@ public class NodeTest {
 		}
 		
 		assertFalse("Link exists between nodes", n.linkTo(nD) );
-		assertEquals("The link weight is not correct", -1.0, n.linkWeight(nD) );
+		assertEquals("The link weight is not correct", Node.NOT_CONNECTED, n.linkWeight(nD) );
 	}
 
 }

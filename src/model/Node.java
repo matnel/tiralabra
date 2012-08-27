@@ -15,6 +15,11 @@ public class Node {
 	private String name;
 	
 	/**
+	 * Value used to indicate that that nodes are not connected.
+	 * */
+	public static int NOT_CONNECTED = Integer.MIN_VALUE;
+	
+	/**
 	 * Default constructor, creates an single node.
 	 * 
 	 * @param name name of this node
@@ -86,7 +91,7 @@ public class Node {
 		if( linkTo(n) ) {
 			return neighbor.get(n);
 		}
-		return -1;
+		return NOT_CONNECTED;
 	}
 	
 	/**
