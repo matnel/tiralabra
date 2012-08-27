@@ -176,7 +176,7 @@ public class ShortestPathGraphTest {
 		while( correctI.hasNext() ) {
 			Node c = correctI.next();
 			Node g = graphI.next();
-			assertEquals("The path from 4 to 8 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
+			assertEquals("The path from 4 to 5 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
 		}
 		
 	}
