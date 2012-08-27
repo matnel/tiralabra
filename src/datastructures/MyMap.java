@@ -190,7 +190,7 @@ public class MyMap<K, V> implements Map<K, V> {
 	
 	@Override
 	public Set<K> keySet() {
-		Set<K> keys = new TreeSet<K>();
+		Set<K> keys = new MySet<K>();
 		for( Map.Entry<K, V> entry : entrySet() ) {
 			keys.add( entry.getKey() );
 		}
