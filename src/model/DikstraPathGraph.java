@@ -6,33 +6,6 @@ import datastructures.*;
 public class DikstraPathGraph extends ShortestPathGraph {
 
 	@Override
-	public double distance(Node from, Node to) {
-		
-		// this is the most computation heavy operation
-		List<Node> path = path(from, to);
-		
-		// compared to generating the Dikstra's graph these are trivial,
-		// no major impact in O(n) sense!
-		
-		// special case, there's no path!
-		if( path.isEmpty() ) {
-			return INFINITY;
-		}
-		
-		double distance = 0;
-		Iterator<Node> pathI = path.iterator();
-		
-		Node last = pathI.next();
-		while( pathI.hasNext() ) {
-			Node next = pathI.next();
-			distance += last.linkWeight( next );
-			last = next;
-		}
-		
-		return distance;
-	}
-
-	@Override
 	public List<Node> path(Node from, Node to) {
 		// list of items that must be checked
 		PriorityQueue<QueueNode> check = new PriorityQueue<QueueNode>();

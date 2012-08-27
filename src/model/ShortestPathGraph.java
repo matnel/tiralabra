@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,7 +20,32 @@ public abstract class ShortestPathGraph extends Graph {
 	 * @param to node where the path leads
 	 * @return double return the shortest distance between nodes from and to or INFINITY, if no such path exists.
 	 * */
-	public abstract double distance(Node from, Node to);
+	public double distance(Node from, Node to) {
+		
+		// this is the most computation heavy operation
+		List<Node> path = path(from, to);
+		
+		// compared to generating the Dikstra's graph these are trivial,
+		// no major impact in O(n) sense!
+		
+		// special case, there's no path!
+		if( path.isEmpty() ) {
+			return INFINITY;
+		}
+		
+		double distance = 0;
+		Iterator<Node> pathI = path.iterator();
+		
+		Node last = pathI.next();
+		while( pathI.hasNext() ) {
+			Node next = pathI.next();
+			distance += last.linkWeight( next );
+			last = next;
+		}
+		
+		return distance;
+	}
+
 	
 	/**
 	 * Calculates the shortest path between Nodes from and to.
