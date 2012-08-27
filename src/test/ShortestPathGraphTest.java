@@ -82,25 +82,7 @@ public class ShortestPathGraphTest {
 		assertEquals("Path from 12 to 11 should be there", 1 , graph.distance(from, to) , 0.01 );
 		assertEquals("Path from 11 to 12 should not be there", ShortestPathGraph.INFINITY , graph.distance(to, from) , 0.01 );
 	}
-	
-	@Test
-	public void testNextTo() {
-		List<Node> links;
-		for( Node central : nodes.values() ) {
-			for( Map.Entry<Node, Double> target : central.neighbors().entrySet() ) {
-				assertEquals("The distance between neigbour nodes is incorrect", target.getValue().doubleValue(), graph.distance( central, target.getKey() ) , 0.01 );
-				
-				links = new ArrayList<Node>();
-				links.add( central );
-				links.add( target.getKey() );
-				
-				assertEquals("The shortest path between neigbours goes troug them", links, graph.path(central, target.getKey() ) );
-				
-			}
-		}
-		
-	}
-	
+
 	@Test
 	public void testPaths1() {
 		
@@ -174,5 +156,30 @@ public class ShortestPathGraphTest {
 			assertEquals("The path from 1 to 11 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
 		}
 	}
+	
+	@Test
+	public void testPaths4() {
+		
+		List<Node> correct = new ArrayList<Node>();
+		Node from = nodes.get(4);
+		Node to = nodes.get(5);
+		
+		assertEquals("Distance from 4 to 5 incorrect", 2, graph.distance(from, to) , 0.01 );
+		
+		correct.add( from );
+		correct.add( nodes.get(8) );
+		correct.add( to );
+		
+		Iterator<Node> correctI = correct.iterator();
+		Iterator<Node> graphI = graph.path(from, to).iterator();
+		
+		while( correctI.hasNext() ) {
+			Node c = correctI.next();
+			Node g = graphI.next();
+			assertEquals("The path from 4 to 8 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
+		}
+		
+	}
+
 
 }
