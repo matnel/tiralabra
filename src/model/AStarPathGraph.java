@@ -1,13 +1,10 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import model.ShortestPathGraph.QueueNode;
-import datastructures.MyList;
+import datastructures.*;
 
 public class AStarPathGraph extends ShortestPathGraph {
 	
@@ -30,8 +27,8 @@ public class AStarPathGraph extends ShortestPathGraph {
 		PriorityQueue<QueueNode> check = new PriorityQueue<QueueNode>();
 		
 		// initialize all nodes and distances
-		Map<Node,Double> distances = new HashMap<Node, Double>();
-		Map<Node,Node> paths = new HashMap<Node, Node>();
+		Map<Node,Double> distances = new MyMap<Node, Double>();
+		Map<Node,Node> paths = new MyMap<Node, Node>();
 		
 		for( Node n : edges() ) {
 			distances.put( n , INFINITY );

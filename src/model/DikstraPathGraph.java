@@ -1,5 +1,9 @@
 package model;
-import java.util.*;
+
+
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 import datastructures.*;
 
@@ -11,10 +15,10 @@ public class DikstraPathGraph extends ShortestPathGraph {
 		PriorityQueue<QueueNode> check = new PriorityQueue<QueueNode>();
 		
 		// initialize all nodes and distances
-		Map<Node,Double> distances = new HashMap<Node, Double>();
+		Map<Node,Double> distances = new MyMap<Node, Double>();
 		// TODO: note! this can also include just the shortest path graph and the list could be
 		// in the end, on the fly. improves the memory consumption!
-		Map<Node,List<Node>> paths = new HashMap<Node, List<Node>>();
+		Map<Node,List<Node>> paths = new MyMap<Node, List<Node>>();
 		
 		for( Node n : edges() ) {
 			distances.put( n , INFINITY );
