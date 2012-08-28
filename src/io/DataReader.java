@@ -50,9 +50,7 @@ public class DataReader {
 		
 		Graph g = new Graph();
 		
-		for( Node n: nodes.values() ) {
-			g.addNode(n);
-		}
+		g.addAll( nodes.values() );
 		
 		return g;
 	}
