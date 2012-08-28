@@ -6,6 +6,9 @@ import java.util.PriorityQueue;
 
 import datastructures.*;
 
+/**
+ * Calculates the shortest path using A*-algorithm.
+ * **/
 public class AStarPathGraph extends ShortestPathGraph {
 	
 	/**

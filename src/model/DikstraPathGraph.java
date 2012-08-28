@@ -7,6 +7,9 @@ import java.util.PriorityQueue;
 
 import datastructures.*;
 
+/**
+ * Calculates shortest path using Dikstra's algorithm.
+ * */
 public class DikstraPathGraph extends ShortestPathGraph {
 
 	@Override
