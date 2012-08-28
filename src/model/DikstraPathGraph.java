@@ -12,6 +12,8 @@ public class DikstraPathGraph extends ShortestPathGraph {
 		
 		// initialize all nodes and distances
 		Map<Node,Double> distances = new HashMap<Node, Double>();
+		// TODO: note! this can also include just the shortest path graph and the list could be
+		// in the end, on the fly. improves the memory consumption!
 		Map<Node,List<Node>> paths = new HashMap<Node, List<Node>>();
 		
 		for( Node n : edges() ) {
