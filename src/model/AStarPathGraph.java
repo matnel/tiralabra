@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -19,7 +20,8 @@ public class AStarPathGraph extends ShortestPathGraph {
 	 * @return the estimated value of the path length.
 	 * */
 	private double estimate(Node a, Node b) {
-		return -1;
+		// FIXME: for testing only, makes this Dikstra's algorithm!
+		return a.linkWeight(b);
 	}
 
 	@Override
@@ -84,13 +86,19 @@ public class AStarPathGraph extends ShortestPathGraph {
 			current = check.poll().node();
 		}
  		
-		List<Node> result = new MyList<Node>();
+		List<Node> backward = new MyList<Node>();
 		Node previous = to;
 		while( paths.containsKey( previous ) ) {
-			result.add( previous );
+			backward.add( previous );
 			previous = paths.get( previous );
 		}
 		
+		// rotate list
+		// todo: this could be done via a stack too! simpler that way
+		List<Node> result = new MyList<Node>();
+		for(int i = backward.size() -1; i >= 0; i-- ) {
+			result.add( backward.get(i) );
+		}
 		return result;
 
 	}
