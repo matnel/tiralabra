@@ -22,10 +22,7 @@ public class ShortestPathGraphTest {
 			nodes.put( i, new Node(name) );
 		}
 		
-		// TODO: move this code to Graph, addAll()
-		for( Node n : nodes.values() ) {
-			graph.addNode(n);
-		}
+		graph.addAll( nodes.values() );
 		
 		// connect nodes
 		nodes.get(1).linkTo( nodes.get(2), 1 );
