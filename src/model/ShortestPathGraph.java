@@ -57,20 +57,51 @@ public abstract class ShortestPathGraph extends Graph {
 	public abstract List<Node> path(Node from, Node to);
 	
 	
+	/**
+	 * Container storing the node and the current found distance of this node.
+	 * Used in systems that require distance comparisons between elements of the system.
+	 * **/
 	protected class QueueNode<T> implements Comparable<T> {
 		
+		/**
+		 * The node stored in this object.
+		 * */
 		private Node node;
+		
+		/**
+		 * The distance associated with this node.
+		 * */
 		private double distance;
 		
-		public QueueNode(Node node, double initial) {
+		
+		/**
+		 * Default constructor.
+		 * 
+		 * @param node node stored in this container
+		 * @param initial the distance associated with this node
+		 * 
+		 **/
+		QueueNode(Node node, double initial) {
 			this.node = node;
 			this.distance = initial;
 		}
 		
-		public Node node() {
+		/**
+		 * Returns the node stored in this container.
+		 * 
+		 * @return the node
+		 * */
+		Node node() {
 			return node;
 		}
 		
+		/**
+		 * Compares if the nodes stored in the QueueNodes are same.
+		 * 
+		 * @param o other object compared with
+		 * 
+		 * @return true if the nodes stored are same, false otherwise
+		 * */
 		public boolean equals(Object o) {
 			if( ! (o instanceof QueueNode) ) {
 				return false;
@@ -79,7 +110,15 @@ public abstract class ShortestPathGraph extends Graph {
 			return n.node.equals( this.node );
 		}
 
-		@Override
+		/**
+		 * Allows comparing the distances between nodes.
+		 * 
+		 * @param o other object
+		 * 
+		 * @returns positive, if other node is in shorter distance,<br/>
+		 * 			negative if this node is in shorter distance<br/>
+		 * 			zero if distances are the same.
+		 * */
 		public int compareTo(T o) {
 			QueueNode<T> other = (QueueNode<T>) o;
 			return (int)( this.distance - other.distance );
