@@ -29,29 +29,34 @@ public class AStarPathGraph extends ShortestPathGraph {
 		
 		// initialize all nodes and distances
 		Map<Node,Double> distances = new HashMap<Node, Double>();
-		Map<Node,List<Node>> paths = new HashMap<Node, List<Node>>();
+		Map<Node,Node> paths = new HashMap<Node, Node>();
 		
 		for( Node n : edges() ) {
 			distances.put( n , INFINITY );
-			paths.put( n , new MyList<Node>() );
 			check.add( new QueueNode( n , INFINITY )  );
 		}
 		
 		// set current node is zero distance
 		distances.put( from, 0.0 );
-		paths.get( from ).add( from );
+		paths.put( from, null);
 		
 		Node current = from;
+
 		
 		while( ! check.isEmpty() ) {
 			
-			double currentDistance = distances.get(current);
-			List<Node> currentPath = paths.get(current);
+			// check if located the target?
+			if( current == to ) {
+				break;
+			}
+			
+			double currentDistance = distances.get( current );
 			
 			for( Map.Entry<Node, Double> neigbour : current.neighbors().entrySet() ) {
 				
 				Node n = neigbour.getKey();
-				double d = neigbour.getValue();
+				double d = estimate(current, n);
+
 				double candidate = currentDistance + d;
 				
 				boolean update = false;
@@ -65,12 +70,8 @@ public class AStarPathGraph extends ShortestPathGraph {
 				if( candidate < distances.get( n ) || update ) {
 					// set new distance to candidate
 					distances.put( n, candidate );
-					
-					// set new path
-					List<Node> newPath = new MyList<Node>();
-					newPath.addAll( currentPath );
-					newPath.add( n );
-					paths.put( n , newPath );
+					// set new previous node to candidate
+					paths.put( n , current );
 					
 					// remove from que && update back to new position
 					check.remove( new QueueNode( n , -1 ) );
@@ -83,7 +84,14 @@ public class AStarPathGraph extends ShortestPathGraph {
 			current = check.poll().node();
 		}
  		
-		return paths.get( to );
+		List<Node> result = new MyList<Node>();
+		Node previous = to;
+		while( paths.containsKey( previous ) ) {
+			result.add( previous );
+			previous = paths.get( previous );
+		}
+		
+		return result;
 
 	}
 
