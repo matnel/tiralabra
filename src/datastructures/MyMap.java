@@ -102,6 +102,12 @@ public class MyMap<K, V> implements Map<K, V> {
 		if( count / map.length > REHASH_TRESHOLD  ) {
 			rehash();
 		}
+		
+		// special case, do now allow null as key!
+		if( key == null ) {
+			throw new NullPointerException();
+		}
+		
 		Bucket b = getBucket(key);
 		int index = hash( key );
 		// check if there's any value we could add
@@ -165,6 +171,12 @@ public class MyMap<K, V> implements Map<K, V> {
 		}
 		return set;
 	}
+	
+	@Override
+	public boolean containsKey(Object key) {
+		K k = (K) key;
+		return getBucket( k ) != null;
+	}
 
 	// OVERRIDED, not special implementations
 	
@@ -195,11 +207,6 @@ public class MyMap<K, V> implements Map<K, V> {
 			keys.add( entry.getKey() );
 		}
 		return keys;
-	}
-
-	@Override
-	public boolean containsKey(Object key) {
-		return keySet().contains(key);
 	}
 
 	@Override
