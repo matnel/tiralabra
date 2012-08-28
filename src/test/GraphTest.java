@@ -99,7 +99,7 @@ public class GraphTest {
 		g.addNode( nB );
 		g.addNode( nC );
 		
-		double[][] result = { {0,10,100}, {5,0,-1}, {-1,-1,0} };
+		double[][] result = { {0,10,100}, {5,0, Node.NOT_CONNECTED }, { Node.NOT_CONNECTED , Node.NOT_CONNECTED ,0} };
 		assertArrayEquals("Matrix not generated correctly", result, g.matrix() );
 	}
 
