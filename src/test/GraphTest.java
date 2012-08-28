@@ -130,5 +130,17 @@ public class GraphTest {
 		
 		assertFalse("Node should not be in graph", g.has("C") );
 	}
+	
+	@Test
+	public void testAddAll() {
+		List<Node> l = new ArrayList<Node>();
+		l.add( nA );
+		l.add( nB );
+		
+		g.addAll( l );
+		
+		assertTrue( "A should be in graph", g.has( nA ) );
+		assertTrue( "B should be in graph", g.has( nB ) );
+	}
 
 }

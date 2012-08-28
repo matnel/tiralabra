@@ -93,11 +93,23 @@ public class Graph {
 	
 	/**
 	 * Returns the edges of this graph.
+	 * 
+	 * @return edges
 	 * **/
 	public List<Node> edges() {
 		return edges;
 	}
 	
-	// abstract Map shortestPaths();
+	/**
+	 * Adds all nodes in collection to this graph.
+	 * Assumes that nodes can be added, does not notify about errors.
+	 * 
+	 * @param collection nodes to be added
+	 * */
+	public void addAll(Collection<Node> collection) {
+		for(Node n : collection ) {
+			addNode( n );
+		}
+	}
 
 }
