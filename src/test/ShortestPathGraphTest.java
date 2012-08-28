@@ -10,7 +10,7 @@ import org.junit.*;
 
 public class ShortestPathGraphTest {
 	
-	ShortestPathGraph graph = new DikstraPathGraph();
+	ShortestPathGraph graph = new AStarPathGraph();
 	
 	HashMap<Integer,Node> nodes = new HashMap<Integer,Node>();
 
@@ -103,7 +103,7 @@ public class ShortestPathGraphTest {
 		while( correctI.hasNext() ) {
 			Node c = correctI.next();
 			Node g = graphI.next();
-			assertEquals("The path from 4 to 8 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
+			assertEquals("The path from 1 to 5 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
 		}
 		
 	}
@@ -128,7 +128,7 @@ public class ShortestPathGraphTest {
 		while( correctI.hasNext() ) {
 			Node c = correctI.next();
 			Node g = graphI.next();
-			assertEquals("The path from 1 to 5 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
+			assertEquals("The path from 5 to 6 incorrect, should go via " + c.name() + " but is " + g.name() , c, g );
 		}
 	}
 	
