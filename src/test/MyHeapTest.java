@@ -39,26 +39,6 @@ public class MyHeapTest {
 		assertFalse("Should not be in list", test.contains(2) );
 		assertFalse("Should not be in list", test.contains(5) );
 	}
-
-	@Test
-	public void testRetainAll() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testToArray() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testToArrayTArray() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testIterator() {
-		fail("Not yet implemented");
-	}
 	
 	// POLLING
 	
@@ -100,10 +80,10 @@ public class MyHeapTest {
 		
 		assertEquals("Heap not correct", 1, test.peek().intValue() );
 		assertEquals("Heap not correct", 1, test.peek().intValue() );
-		test.poll();
+		test.remove();
 		assertEquals("Heap not correct", 2, test.peek().intValue() );
-		test.poll();
-		test.poll();
+		test.remove();
+		test.remove();
 		assertEquals("Empty heap should be null", null, test.peek() );
 	}
 	
@@ -116,7 +96,8 @@ public class MyHeapTest {
 		assertEquals("Heap not correct", 1, test.element().intValue() );
 		assertEquals("Heap not correct",  1, test.element().intValue() );
 		test.remove();
-		assertEquals("Heap not correct", 2, test.element().intValue() );
+		test.remove();
+		assertEquals("Heap not correct", 5, test.element().intValue() );
 	}
 	
 	@Test(expected=NoSuchElementException.class)
@@ -132,7 +113,7 @@ public class MyHeapTest {
 			test.add(i);
 		}
 		for(int i = 500; i > 0; i = i - 3) {
-			assertTrue("Element should be in heap", test.contains( i ) );
+			assertTrue("Element " + i + " should be in heap", test.contains( i ) );
 		}
 		for(int i = 500; i > 0; i = i - 3) {
 			assertEquals("Hash not correct", i, test.remove().intValue() );
@@ -195,6 +176,26 @@ public class MyHeapTest {
 
 	@Test
 	public void testContainsAll() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testRetainAll() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testToArray() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testToArrayTArray() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testIterator() {
 		fail("Not yet implemented");
 	}
 
