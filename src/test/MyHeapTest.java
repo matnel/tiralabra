@@ -24,7 +24,7 @@ public class MyHeapTest {
 		test.add(5);
 		assertTrue( "Should be stored", test.contains(1) );
 		assertTrue( "Should be stored", test.contains(5) );
-		assertFalse( "Should not be stored", test.contains(1) );
+		assertFalse( "Should not be stored", test.contains(10) );
 	}
 
 	@Test
