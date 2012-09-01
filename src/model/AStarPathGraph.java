@@ -3,6 +3,9 @@ package model;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
+
+import model.ShortestPathGraph.QueueNode;
 
 import datastructures.*;
 
@@ -27,7 +30,7 @@ public class AStarPathGraph extends ShortestPathGraph {
 	@Override
 	public List<Node> path(Node from, Node to) {
 		// list of items that must be checked
-		PriorityQueue<QueueNode> check = new PriorityQueue<QueueNode>();
+		Queue<QueueNode> check = new MyHeap<QueueNode>();
 		
 		// initialize all nodes and distances
 		Map<Node,Double> distances = new MyMap<Node, Double>();
