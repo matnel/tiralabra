@@ -3,6 +3,9 @@
 \usepackage[finnish]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+
+\usepackage{hyperref}
+
 \begin{document}
 
 \title{A* ja Dikstra vertailussa}
@@ -51,12 +54,14 @@ Tietorakenteiden harjoitustyön luonteen vuoksi toteutukseen on kuulunut omien t
 \begin{tabular}{l|l}
 Toteuttava luokka & Rajapinta \\ 
 \hline 
-\texttt{MyMap} & \texttt{java.util.Map} \\
-\texttt{MyHeap} & \texttt{java.util.Queue} \\ 
-\texttt{MyList} & \texttt{java.util.List} \\ 
-\texttt{MySet} & \texttt{java.util.Set} \\ 
-\texttt{MyIterator} & \texttt{java.util.ListIterator} \\ 
-\end{tabular} 
+\texttt{MyMap} &  \href{http://docs.oracle.com/javase/6/docs/api/java/util/Map.html}{\texttt{java.util.Map}} \\
+\texttt{MyHeap} & \href{http://docs.oracle.com/javase/6/docs/api/java/util/Queue.html}{\texttt{java.util.Queue}} \\ 
+\texttt{MyList} & \href{http://docs.oracle.com/javase/6/docs/api/java/util/List.html}{\texttt{java.util.List}} \\ 
+\texttt{MySet} & \href{http://docs.oracle.com/javase/6/docs/api/java/util/Set.html}{\texttt{java.util.Set}} \\ 
+\texttt{MyIterator} & \href{http://docs.oracle.com/javase/6/docs/api/java/util/ListIterator.html}{\texttt{java.util.ListIterator}} \\ 
+\end{tabular}
+
+On syytä huomata, että \texttt{MyHeap}-luokan \texttt{contains}-metodi eroaa esimerkiksi \href{http://docs.oracle.com/javase/6/docs/api/java/util/PriorityQueue.html}{\texttt{PriorityQueue}}-dokumentaation lupaamasta suoritusajasta $\mathcal{O}(n)$. Koska tiedämme, että sisäisen toteutuksen lista on aina järjestyksessä, on mahdollista käyttää puolitushakua, joka takaa suoritukseen ajan $\mathcal{O}(\log n)$.
 
 \caption{Omien tietorakenteiden vastaavuus Javan tietorakenteiden kanssa}
 \label{omat_tietorakenteet}
