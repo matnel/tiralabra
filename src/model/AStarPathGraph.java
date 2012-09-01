@@ -22,7 +22,7 @@ public class AStarPathGraph extends ShortestPathGraph {
 	 * 
 	 * @return the estimated value of the path length.
 	 * */
-	private double estimate(Node a, Node b) {
+	protected double estimate(Node a, Node b) {
 		// FIXME: for testing only, makes this Dikstra's algorithm!
 		return a.linkWeight(b);
 	}
