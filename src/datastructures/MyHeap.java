@@ -8,41 +8,57 @@ import java.util.Queue;
 
 public class MyHeap<E extends Comparable> implements Queue<E> {
 	
+	/**
+	 * The initial size of the heap.
+	 * **/
 	private static int INITIAL_SIZE = 50;
 	
+	/**
+	 * All data is stored in this table.
+	 * **/
 	private Object[] data = new Object[ INITIAL_SIZE ];
 	
+	/**
+	 * The current size of the heap.
+	 * */
 	private int size = 0;
 	
+	/**
+	 * After removing elements from the heap, the heap needs to be reorganized.
+	 * This method maintains the feature that each parent is smaller than it's children
+	 * by swapping elements when needed.
+	 * */
 	private void heapify(int i) {
-		int leftI = 2 * i + 1;
-		int rightI = 2 * (i + 1);
-		int currentI = i;
+		int leftIndex = 2 * i + 1;
+		int rightIndex = 2 * (i + 1);
+		int currentIndex = i;
 		
 		// tree structure
-		E left  =  leftI < size ? (E) data[ leftI  ] : null;
-		E right = rightI < size ? (E) data[ rightI ] : null;
-		E current = (E) data[ currentI ];
+		E left  =  leftIndex < size ? (E) data[ leftIndex  ] : null;
+		E right = rightIndex < size ? (E) data[ rightIndex ] : null;
+		E current = (E) data[ currentIndex ];
 		
-		int newI = -1;
+		boolean swap = false;
 		E min = current;
+		int minIndex = -1;
 		
 		// check smaller children children
 		if( left != null && left.compareTo( current ) < 0 ) {
-			newI = leftI;
+			swap = true;
+			minIndex = leftIndex;
 			min = left;
 		}
 		if( right != null && right.compareTo( min ) < 0 ) {
-			newI = rightI;
+			swap = true;
+			minIndex = rightIndex;
 			min = right;
 		}
 		
 		// swap positions if needed
-		if( newI > -1 ) {
-			Object temp = data[ newI ];
-			data[ newI ] = data[currentI];
-			data [currentI ] = temp;
-			heapify( newI );
+		if( swap ) {
+			data[ minIndex ] = current;
+			data [currentIndex ] = min;
+			heapify( minIndex );
 		}
 	}
 
@@ -129,29 +145,31 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 			}
 			data = newData;
 		}
+		// save value!
+		data[ size ] = value;
+		// maintain!
 		
-		data[ size++ ] = value;
+		int currentIndex = size;
+		int parentIndex = ( currentIndex - 1) / 2;
 		
-		// maintain heap
-		int index = size - 1;
-		E current = (E) data[index];
-		E parent = (E) data[ index / 2];
-		while( current.compareTo( parent ) < 0 ) {
-			// swap parent and current
-			E temp = (E) data[index];
-			data[index] = parent;
-			data[ index / 2] = temp;
-			
-			
-			// new focus of investigation
-			index = index / 2;
-			current = (E) data[index];
-			parent = (E) data[ index / 2];
-		}
+        E current = (E) data[ currentIndex ];
+        E parent = (E) data[ parentIndex ];
+
+        while ( current.compareTo( parent ) < 0 ) {
+        	// swap!
+            data[ parentIndex ] = current;
+            data[ currentIndex ] = parent;
+            // update
+            currentIndex = parentIndex;
+            parentIndex = ( currentIndex - 1) / 2;
+            current = (E) data[currentIndex];
+            parent = (E) data[parentIndex];
+        }
+		// increase heap size
+		size++;
 		
 		return true;
 	}
-
 
 	@Override
 	public E element() {
