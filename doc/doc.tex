@@ -44,7 +44,7 @@ Ohjelma on toteutettu oliomallinnusta hyödyntäen: paketteja, rajapintoja ja pe
 \subsection{Omat tietorakenteet}
 \label{datastructures}
 
-Tietorakenteiden harjoitustyön luonteen vuoksi toteutukseen on kuulunut omien tietorakenteiden kehittäminen ja testaaminen. Käytännöllisistä syistä johtuen tietorakenteeni vastaavat \textbf{java.util}-paketin tietorakenteita, koska tämä mahdollisti ketterämmän kehityksen\footnote{Muuttujat on määritelty yleisten rajapintojen kautta, jolloin niiden implementaatioluokat pystyi helposti vaihtamaan Javan rajapintaa toteuttavasta luokasta omaan toteutukseeni.} ja Javan valmiiden toiminnallisuuksien käytön osana ohjelmaa. Täsmällisesti toteutussuhteet on esitetty taulukossa \ref{omat_tietorakenteet}.
+Tietorakenteiden harjoitustyön luonteen vuoksi toteutukseen on kuulunut omien tietorakenteiden kehittäminen ja testaaminen. Käytännöllisistä syistä johtuen tietorakenteeni vastaavat \texttt{java.util}-paketin tietorakenteita, koska tämä mahdollisti ketterämmän kehityksen\footnote{Muuttujat on määritelty yleisten rajapintojen kautta, jolloin niiden implementaatioluokat pystyi helposti vaihtamaan Javan rajapintaa toteuttavasta luokasta omaan toteutukseeni.} ja Javan valmiiden toiminnallisuuksien käytön osana ohjelmaa. Täsmällisesti toteutussuhteet on esitetty taulukossa \ref{omat_tietorakenteet}.
 
 \begin{table}
 
@@ -62,13 +62,29 @@ Toteuttava luokka & Rajapinta \\
 \label{omat_tietorakenteet}
 \end{table}
 
-
-
 \subsection{Malli}
 \label{model.graph}
 
+Verkko koostuu solmuista ja solmujen välisistä kaarista, eli matemaattisemmin $\mathcal{G}( \mathbb{V}, \mathbb{E})$. Tässä ohjelmassa verkkoa vastaa luokka \texttt{Graph}, ja solmua vastaa luokka \texttt{Node}.
+
+\texttt{Graph} koostuu listasta \texttt{Node}ja, ja kukin \texttt{Node} sisältää tiedon naapurisolmuistansa ja kaarien painoista. Verkkoon voi lisätä solmuja metodilla \texttt{addNode(Node node)} tai operaatiolla \texttt{addAll(Collection<Node> collection)}. Suoritusajat käyttäen \texttt{MyList}-luokkaa ovat vastaavasti $\mathcal{O}(1)$ ja $\mathcal{O}(n)$. Verkon solmut on saatavissa listana metodilla \texttt{edges()}, ja tämä operaatio on myös vakiaikainen, palauttaen verkon listan. Vaihtoehtoisena ratkaisuna olisi voinut käyttää sisäisessä toteutuksessa hajautustaulua verkon nimiltä verkon alkioille. Tämä olisi säilyttänyt samat suoritusajat lisäyksessä, mutta nopeuttanut hakua solmun nimen perusteella vakioaikaseksi, listan tapauksessa tämä aika on lineaarinen. Vastaavasti alkioiden käsittely listana olisi vakioaikaisen operaation sijaan $\mathcal{O}(n)$-operaatio, koska listan alkiot tulisi kerätä erikseen hajautustaulusta. Koska vakioaikainen suoritus verkon solmujen listaamiseen on tämän ohjelman kannalta keskeisempi operaatio, niin listojen käyttö oli tässä tapauksessa suositellumpi vaihtoehto.
+
+\texttt{Node}n tehtävän on tallentaa tietoa solmun nimestä ja solmun naapureista. Solmun naapurit on tallennettu hajautustauluun, jossa on tallessa naapurisolmut ja niitä vastaavina pareina kaaren paino. Hajautustaulu on luonnollinen valinta tässä tapauksessa, koska se sallii lähes vakioaikaisen ($\mathcal{O}(1 + \frac{n}{k})$) lisäämisen, avainta vastaavan arvon noutamisen sekä avaimen arvon olemassaolon tarkistamisen. Nämä ovat keskeiset \texttt{Node}n tarjoamat ominaisuudet: uuden naapurin lisääminen (\texttt{ linkTo(Node n, double weight)}), kahden alkion välisen etäisyyden noutaminen (\texttt{linkWeight(Node n)}) sekä sen tarkistaminen, onko kahden alkion välillä kaarta (\texttt{linkTo(Node n)}).
+
 \subsection{Lyhyimmän polun etsintä}
 \label{path}
+
+Lyhyimmän polun etsintää varten toteutettiin abstrakti luokka \texttt{ShortestPathGraph}. \texttt{ShortestPathGraph} perii \texttt{Graph}-luokan, ja laajentaa sen toimintaa kahdella metodilla.
+
+\texttt{path(Node from, Node to)} palauttaa lyhyimmän reitin solmusta \texttt{from} solmuun \texttt{to}. Lyhin reitti palautetaan listana solmuja, mukaanlukien solmut \texttt{from} ja \texttt{to}. Metodi on abstrakti, eli se jätetään toteutettavaksi \texttt{ShortestPathGraph}in  periville aliluokille, myös sen suoritusaika riippuu reitinhakualgoritmin tehokkuudesta.
+
+\texttt{distance(Node from, Node to)} palauttaa lyhimmän reitin pituuden solmusta \texttt{from} solmuun \texttt{to}. Se käyttää hyödykseen operaatiota \texttt{path(Node from, Node to)}, joka on myös metodin laskennallisesti vaativin osuus: lista palautetuista solmuista iteroidaan ja kunkin välin etäisyys lisätään kokonaispituuteen. Koska kahden solmun välisen etäisyyden etsiminen on vakioaikainen operaatio, on kokonaispituuden laskemisen aikavaativuus $\mathcal{O}(n')$, eli lineraarisesti suhteessa lyhyimmän polun pituuteen. Kokonaisuudessan siis on selvää, että tämä on enintään solmujen kokonaismäärän suhteen lineaarinen $\mathcal{O}(v)$. Kokonaisuudessaan kokonaispituuden laskeminen saadusta polkulistasta on minimaalinen suhteessa reitinhakualgoritmiin. Kuitenkin, tällä tavoin vältetään koodin toisteisuutta huomattavasti.
+
+Luokkaan on lisäksi lisätty suojattu sisäluokka \texttt{QueueNode}. Tämän luokan erikoisuus on \texttt{Comparable}-rajapinnan toteutus, mikä on välttämätöntä kekorakenteen kannalta. Sisäluokkaan tallennetaan etäisyys sekä \texttt{Node}, jonka etäisyyttä käsitellään. \texttt{compareTo}-metodi vertaa tätä etäisyyttä, eli käytännössä mahdollistaa minimikeon luomisen kunkin alkion etäisyyden suhteen. \texttt{equals}-metodi taas tarkastaa, onko \texttt{Node}t samat -- mutta ei kiinnitä huomiota etäisyyteen. Koska kyseessä on suojattu sisäluokka, luokka on käytettävissä vain \texttt{ShortestPathGraph}-luokan aliluokille.
+
+\subsubsection{Dikstran algoritmi}
+
+\subsubsection{A*-algoritmi}
 
 \subsection{Tiedosto-operaatiot}
 \label{io}
