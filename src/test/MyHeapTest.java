@@ -11,20 +11,20 @@ import datastructures.*;
 
 public class MyHeapTest {
 	
-	private MyHeap<Integer,Integer> test;
+	private MyHeap<Integer> test;
 	
 	@Before
 	public void setUp() {
-		test = new MyHeap<Integer,Integer>();
+		test = new MyHeap<Integer>();
 	}
 
 	@Test
 	public void testContains() {
 		test.add(1);
 		test.add(5);
+		assertFalse( "Should not be stored", test.contains(10) );
 		assertTrue( "Should be stored", test.contains(1) );
 		assertTrue( "Should be stored", test.contains(5) );
-		assertFalse( "Should not be stored", test.contains(10) );
 	}
 
 	@Test
@@ -46,11 +46,15 @@ public class MyHeapTest {
 	public void testPoll() {
 		test.add(5);
 		test.add(1);
+		test.add(7);
 		test.add(2);
+		test.add(3);
 		
 		assertEquals("Heap not correct", 1, test.poll().intValue() );
-		assertEquals("Heap not correct",  2, test.poll().intValue() );
+		assertEquals("Heap not correct", 2, test.poll().intValue() );
+		assertEquals("Heap not correct", 3, test.poll().intValue() );
 		assertEquals("Heap not correct", 5, test.poll().intValue() );
+		assertEquals("Heap not correct", 7, test.poll().intValue() );
 		assertEquals("Empty heap should return null", null, test.poll() );
 	}
 	
