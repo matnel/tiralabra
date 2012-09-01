@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
+public class MyHeap<E extends Comparable<E>> implements Queue<E> {
 	
 	private static int INITIAL_SIZE = 50;
 	
@@ -26,11 +26,11 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 		
 		int newI = -1;
 		
-		// check children
+		// check smaller children children
 		if( left != null && left.compareTo( current ) < 0 ) {
 			newI = leftI;
 		}
-		if( right != null && right.compareTo( current ) < 0 ) {
+		if( right != null && right.compareTo( current ) < 0 && right.compareTo( left ) < 0 ) {
 			newI = rightI;
 		}
 		
@@ -72,7 +72,11 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 	public boolean remove(Object value) {
 		for(int i = 0; i < size; i++) {
 			if( data[i].equals(value) ) {
-				data[i] = null;
+				// remove the last index to this position
+				size --;
+				data[i] = data[size];
+				data[size] = null;
+				// reorder
 				heapify(0);
 				return true;
 			}
@@ -124,8 +128,35 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 		}
 		
 		data[ size++ ] = value;
-		heapify( 0 );
 		
+		// maintain heap
+		int index = size - 1;
+		E current = (E) data[index];
+		E parent = (E) data[ index / 2];
+		while( current.compareTo( parent ) < 0 ) {
+			// swap parent and current
+			E temp = (E) data[index];
+			data[index] = parent;
+			data[ index / 2] = temp;
+			
+			/*
+			// balance with sibling if needed
+			int sibDirection = -1 + 2 * index % 2; // -1 for left, +1 for right
+			E sibling = (E) data[ index + sibDirection ];
+			if( parent.compareTo( sibling ) < 0 ) {
+				// swap siblings
+				data[ index ] = sibling;
+				data[ index + sibDirection ] = parent;
+			}
+			*/
+			
+			// new focus of investigation
+			index = index / 2;
+			current = (E) data[index];
+			parent = (E) data[ index / 2];
+		}
+		
+		System.out.println( Arrays.toString( data ) );
 		return true;
 	}
 
@@ -158,6 +189,8 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 		data[size ] = null;
 		
 		heapify(0);
+		
+		System.out.println( Arrays.toString( data ) );
 		
 		return temp;
 	}
