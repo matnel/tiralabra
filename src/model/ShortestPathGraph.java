@@ -61,7 +61,7 @@ public abstract class ShortestPathGraph extends Graph {
 	 * Container storing the node and the current found distance of this node.
 	 * Used in systems that require distance comparisons between elements of the system.
 	 * **/
-	protected class QueueNode<T> implements Comparable<T> {
+	protected class QueueNode implements Comparable {
 		
 		/**
 		 * The node stored in this object.
@@ -119,8 +119,8 @@ public abstract class ShortestPathGraph extends Graph {
 		 * 			negative if this node is in shorter distance<br/>
 		 * 			zero if distances are the same.
 		 * */
-		public int compareTo(T o) {
-			QueueNode<T> other = (QueueNode<T>) o;
+		public int compareTo(Object o) {
+			QueueNode other = (QueueNode) o;
 			return (int)( this.distance - other.distance );
 		}
 		
