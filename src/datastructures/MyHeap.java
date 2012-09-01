@@ -1,5 +1,6 @@
 package datastructures;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -145,12 +146,18 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 	@Override
 	public E poll() {
 		
-		E temp = (E) data[0];
-		data[0] = Integer.MAX_VALUE; // TODO: FIXME
+		if( size == 0) {
+			return null;
+		}
 		
-		heapify(0);
+		E temp = (E) data[0];
 		
 		size--;
+		
+		data[0] = data[ size ];
+		data[size ] = null;
+		
+		heapify(0);
 		
 		return temp;
 	}
