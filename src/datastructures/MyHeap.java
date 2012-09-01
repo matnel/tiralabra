@@ -7,7 +7,9 @@ import java.util.Queue;
 
 public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 	
-	private Object[] data = new Object[50];
+	private static int INITIAL_SIZE = 50;
+	
+	private Object[] data = new Object[ INITIAL_SIZE ];
 	
 	private int size = 0;
 	
@@ -23,21 +25,16 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 		
 		int newI = -1;
 		
-		System.out.println( "Compare " + current + " with " + left );
 		// check children
 		if( left != null && left.compareTo( current ) < 0 ) {
 			newI = leftI;
-			System.out.println(" is smaller! ");
 		}
 		if( right != null && right.compareTo( current ) < 0 ) {
 			newI = rightI;
 		}
 		
-		System.out.println( newI );
-		
 		// swap positions if needed
 		if( newI > -1 ) {
-			System.out.println("swap " + currentI + " and " + newI);
 			Object temp = data[ newI ];
 			data[ newI ] = data[currentI];
 			data [currentI ] = temp;
@@ -128,8 +125,6 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 		data[ size++ ] = value;
 		heapify( 0 );
 		
-		System.out.println( data[0] );
-		
 		return true;
 	}
 
@@ -182,14 +177,13 @@ public class MyHeap<E extends Comparable<E>, T> implements Queue<E> {
 	
 	@Override
 	public boolean isEmpty() {
-		System.out.println( size );
 		return size == 0;
 	}
 	
 	@Override
 	public void clear() {
 		size = 0;
-		data = new Object[50];
+		data = new Object[ INITIAL_SIZE ];
 	}
 	
 	// OVERRIDED, using this class
