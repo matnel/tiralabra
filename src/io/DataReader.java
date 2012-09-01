@@ -28,14 +28,14 @@ public class DataReader {
 			}
 			
 			String name = split[0];
-			if( ! nodes.keySet().contains(name) ) {
+			if( ! nodes.containsKey( name ) ) {
 				nodes.put(name, new Node(name) );
 			}
 			
 			Node start = nodes.get( name );
 			
 			name = split[1];
-			if( ! nodes.keySet().contains(name) ) {
+			if( ! nodes.containsKey( name )  ) {
 				nodes.put(name, new Node(name) );
 			}
 			
