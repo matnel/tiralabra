@@ -23,8 +23,7 @@ public class AStarPathGraph extends ShortestPathGraph {
 	 * @return the estimated value of the path length.
 	 * */
 	protected double estimate(Node a, Node b) {
-		// FIXME: for testing only, makes this Dikstra's algorithm!
-		return a.linkWeight(b);
+		return 0;
 	}
 
 	@Override
@@ -38,17 +37,17 @@ public class AStarPathGraph extends ShortestPathGraph {
 		
 		for( Node n : edges() ) {
 			distances.put( n , INFINITY );
-			check.add( new QueueNode( n , INFINITY )  );
 		}
 		
 		// set current node is zero distance
 		distances.put( from, 0.0 );
 		paths.put( from, null);
+		check.add( new QueueNode( from, Double.NEGATIVE_INFINITY ) );
 		
-		Node current = from;
+		Node current = null;
 
-		
 		while( ! check.isEmpty() ) {
+			current = check.poll().node();
 			
 			// check if located the target?
 			if( current == to ) {
@@ -60,9 +59,8 @@ public class AStarPathGraph extends ShortestPathGraph {
 			for( Map.Entry<Node, Double> neigbour : current.neighbors().entrySet() ) {
 				
 				Node n = neigbour.getKey();
-				double d = estimate(current, n);
 
-				double candidate = currentDistance + d;
+				double candidate = currentDistance + current.linkWeight( n );
 				
 				boolean update = false;
 				
@@ -80,13 +78,11 @@ public class AStarPathGraph extends ShortestPathGraph {
 					
 					// remove from que && update back to new position
 					check.remove( new QueueNode( n , -1 ) );
-					check.add( new QueueNode(n, candidate) );
+					check.add( new QueueNode(n, currentDistance + estimate(n, to) ) );
 				}
 				
 			}
 			
-			// take new node to be checked
-			current = check.poll().node();
 		}
  		
 		List<Node> backward = new MyList<Node>();
