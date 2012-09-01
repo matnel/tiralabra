@@ -20,18 +20,21 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 		int currentI = i;
 		
 		// tree structure
-		E left = (E) data[ leftI ];
-		E right = (E) data[ rightI ];
+		E left  =  leftI < size ? (E) data[ leftI  ] : null;
+		E right = rightI < size ? (E) data[ rightI ] : null;
 		E current = (E) data[ currentI ];
 		
 		int newI = -1;
+		E min = current;
 		
 		// check smaller children children
 		if( left != null && left.compareTo( current ) < 0 ) {
 			newI = leftI;
+			min = left;
 		}
-		if( right != null && right.compareTo( current ) < 0 && right.compareTo( left ) < 0 ) {
+		if( right != null && right.compareTo( min ) < 0 ) {
 			newI = rightI;
+			min = right;
 		}
 		
 		// swap positions if needed
@@ -139,16 +142,6 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 			data[index] = parent;
 			data[ index / 2] = temp;
 			
-			/*
-			// balance with sibling if needed
-			int sibDirection = -1 + 2 * index % 2; // -1 for left, +1 for right
-			E sibling = (E) data[ index + sibDirection ];
-			if( parent.compareTo( sibling ) < 0 ) {
-				// swap siblings
-				data[ index ] = sibling;
-				data[ index + sibDirection ] = parent;
-			}
-			*/
 			
 			// new focus of investigation
 			index = index / 2;
@@ -156,7 +149,6 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 			parent = (E) data[ index / 2];
 		}
 		
-		System.out.println( Arrays.toString( data ) );
 		return true;
 	}
 
@@ -189,8 +181,6 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 		data[size ] = null;
 		
 		heapify(0);
-		
-		System.out.println( Arrays.toString( data ) );
 		
 		return temp;
 	}

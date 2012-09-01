@@ -47,14 +47,17 @@ public class MyHeapTest {
 		test.add(5);
 		test.add(1);
 		test.add(7);
+		test.add(9);
 		test.add(2);
 		test.add(3);
+
 		
 		assertEquals("Heap not correct", 1, test.poll().intValue() );
 		assertEquals("Heap not correct", 2, test.poll().intValue() );
 		assertEquals("Heap not correct", 3, test.poll().intValue() );
 		assertEquals("Heap not correct", 5, test.poll().intValue() );
 		assertEquals("Heap not correct", 7, test.poll().intValue() );
+		assertEquals("Heap not correct", 9, test.poll().intValue() );
 		assertEquals("Empty heap should return null", null, test.poll() );
 	}
 	
@@ -116,11 +119,9 @@ public class MyHeapTest {
 		for(int i = 500; i > 0; i = i - 3) {
 			test.add(i);
 		}
-		for(int i = 500; i > 0; i = i - 3) {
-			assertTrue("Element " + i + " should be in heap", test.contains( i ) );
-		}
-		for(int i = 500; i > 0; i = i - 3) {
-			assertEquals("Hash not correct", i, test.remove().intValue() );
+		System.out.println("POLLS");
+		for(int i = 2; i <= 500; i = i + 3) {
+			assertEquals("Hash not correct", i, test.poll().intValue() );
 		}
 	}
 	
