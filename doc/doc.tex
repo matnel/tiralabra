@@ -15,11 +15,66 @@
 
 \newpage
 
+\section*{Tehtävänanto}
+
+Toteuta yleinen ohjelma verkon käsittelyä varten, siten että siinä on mahdollisuus säilöä solmuja ja solmujen välisiä kaaria. Verkko tulee voida määritellä ulkoisessa tiedostossa muodossa \texttt{<solmu 1>:<solmu 2>:<etäisyys solmusta 1 solmuun 2>}, esimerkiksi:
+
+\begin{verbatim}
+a:b:5
+a:c:10
+a:d:1
+c:b:4
+d:c:10
+\end{verbatim}
+
+Lisäksi toteuta lyhyimmän polun etsintä sekä Dikstran algoritmilla \cite{dikstra} että A*-algoritmilla \cite{astar}. Vertaa näitä kahta toteutustapaa toisiinsa empiirisesti.
+
 \section{Toteutus}
 
+Ohjelma on toteutettu oliomallinnusta hyödyntäen: paketteja, rajapintoja ja perintäsuhteita on käytetty selkeyttämään ohjelman rakennetta. Ohjelma koostuu neljästä paketista
 
+\begin{description}
+\item[datastructures] sisältää ohjelman toiminnan kannalta välttämättömät itse toteutetut tietorakenteet kekoa, hajautustaulua ja listaa varten. Tarkemmin tätä pakettia käsitellään kappaleessa \ref{datastructures}.
+\item[model] sisältää ohjelman tarvitsemat itsenäiset toteutustietorakenteet, yleisen muodon verkon sekä erityiset versiot verkosta, jotka toteuttavat tutkittava olevat Dikstran sekä A*-algoritmit. Yleistä verkkoa on esitelty tarkemmin kappaleessa \ref{model.graph} ja lyhyimmän polun etsintää kappaleessa \ref{path}.
+\item[io] tarjoaa palveluja tiedoston lukemiseen tekstiformaatista ohjelman ymmärtämäksi verkoksi. Tätä käsitellään kappaleessa \ref{io}.
+\item[test] sisältää ohjelman muiden luokkien testaamiseen tarvittavat luokat. Ohjelman jokaiselle luokalle on kirjoitettu yksikkötestit. Testausprosessia on käsitelty tarkemmin kappaleessa \ref{test}.
+\end{description}
+
+
+\subsection{Omat tietorakenteet}
+\label{datastructures}
+
+Tietorakenteiden harjoitustyön luonteen vuoksi toteutukseen on kuulunut omien tietorakenteiden kehittäminen ja testaaminen. Käytännöllisistä syistä johtuen tietorakenteeni vastaavat \textbf{java.util}-paketin tietorakenteita, koska tämä mahdollisti ketterämmän kehityksen\footnote{Muuttujat on määritelty yleisten rajapintojen kautta, jolloin niiden implementaatioluokat pystyi helposti vaihtamaan Javan rajapintaa toteuttavasta luokasta omaan toteutukseeni.} ja Javan valmiiden toiminnallisuuksien käytön osana ohjelmaa. Täsmällisesti toteutussuhteet on esitetty taulukossa \ref{omat_tietorakenteet}.
+
+\begin{table}
+
+\begin{tabular}{l|l}
+Toteuttava luokka & Rajapinta \\ 
+\hline 
+\texttt{MyMap} & \texttt{java.util.Map} \\
+\texttt{MyHeap} & \texttt{java.util.Queue} \\ 
+\texttt{MyList} & \texttt{java.util.List} \\ 
+\texttt{MySet} & \texttt{java.util.Set} \\ 
+\texttt{MyIterator} & \texttt{java.util.ListIterator} \\ 
+\end{tabular} 
+
+\caption{Omien tietorakenteiden vastaavuus Javan tietorakenteiden kanssa}
+\label{omat_tietorakenteet}
+\end{table}
+
+
+
+\subsection{Malli}
+\label{model.graph}
+
+\subsection{Lyhyimmän polun etsintä}
+\label{path}
+
+\subsection{Tiedosto-operaatiot}
+\label{io}
 
 \section{Testaus}
+\label{test}
 
 Ohjelman kukin luokka on testattu erikseen JUnit-testein. Arvio code coveragesta...
 
@@ -47,5 +102,8 @@ Täsmällisesti testit toteutettiin seuraaville tapauksille:
 Testit on toteutettu abstraktille yläluokalle \texttt{ShortestPathGraph}, jolloin samaa testikoodia voidaan käyttää sekä luokille \texttt{AStarPathGraph} sekä \texttt{DikstraPathGraph}.
 
 \section{Evaluaatio}
+
+\bibliographystyle{apalike} 
+\bibliography{doc}
 
 \end{document}
