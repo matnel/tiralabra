@@ -6,6 +6,8 @@
 
 \usepackage{hyperref}
 
+\usepackage{algpseudocode}
+
 \begin{document}
 
 \title{A* ja Dikstra vertailussa}
@@ -93,6 +95,28 @@ Luokkaan on lisäksi lisätty suojattu sisäluokka \texttt{QueueNode}. Tämän l
 
 \subsection{Tiedosto-operaatiot}
 \label{io}
+
+Tehtävänannon mukaisen tiedostoformaatin lukemiseen toteutettiin staattinen metodi \texttt{DataReader.readFile(File f)}, joka palauttaa tiedoston perusteella muodostetun verkon. Funktion kuvaus pesudokoodilla on
+
+
+\begin{algorithmic}
+\ForAll{lines in file}
+\State $data \gets $ line.split(':')
+\If { $nodes$ doesn't have $data[1]$}
+    \State add Node( $data[1]$ ) to $nodes$
+\EndIf
+\If { $nodes$ doesn't have $data[2]$}
+    \State add Node( $data[2]$ ) to $nodes$
+\EndIf
+\State $start \gets nodes[ data[1] ]$
+\State $end \gets nodes[ data[2] ]$
+\State set distance from $start$ to $end$ as $data[3]$
+\EndFor
+\State add $nodes$ to $graph$
+\State \Return $graph$
+\end{algorithmic}
+
+Kun tietorakenteeksi $graph$ valitaan hajautustaulu, on operaatiot lisäämiseen ja tarkastukseen lähes vakioaikaisia, jolloin algoritmin aikavaativuus riippuu tiedoston rivien määrästä, eli kaarien lukumäärästä, lineaarisesti: $\mathcal{O}(e}$. Tilavaatimuksen kannalta $graph$ on suurin tilaa vievä muuttuja, ja sen vaatima tila riippuu solmujen lukumäärästä lineaarisesti. Lisäksi yksittäisen solmun tallentamiseen tarvittavaan tilaan riippuu kunkin solmun kaarien lukumäärästä lineaarisesti. Tilavaativuus onkin siis $\mathcal{O}(\max(e, v))$
 
 \section{Testaus}
 \label{test}
