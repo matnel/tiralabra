@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public class MyHeap<E extends Comparable<E>> implements Queue<E> {
+public class MyHeap<E extends Comparable> implements Queue<E> {
 	
 	private static int INITIAL_SIZE = 50;
 	
