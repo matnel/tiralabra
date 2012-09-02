@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
+/**
+ * Implements a minimun heap (priority queue).
+ * **/
 public class MyHeap<E extends Comparable> implements Queue<E> {
 	
 	/**

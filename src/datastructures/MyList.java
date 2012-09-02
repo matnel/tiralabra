@@ -5,18 +5,35 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Provides a one-way linked list.
+ * **/
 public class MyList<E> implements List<E> {
 	
+	/**
+	 * The tunnussolmu of this list.
+	 * */
 	private Element<E> first = new Element<E>(null);
 	
-	// this will help in add(E) case
+	/***
+	 * The last element stored in this list.
+	 * Helps to achive O(1) for add(E) operation.
+	 */
 	private Element<E> last = null;
 	
-	private Element<E> getElement(int arg0) {
+	/**
+	 * Gets the nth element of this list. Causes IndexOutOfBoundsException
+	 * if n is larger than the list size.
+	 * 
+	 * @param n the element searched
+	 * @return The element strored in given position.
+	 * 
+	 * **/
+	private Element<E> getElement(int n) {
 		int index = 0;
 		Element<E> current = first.next;
 		while( current != null ) {
-			if( index == arg0 ) {
+			if( index == n ) {
 				return current;
 			}
 			index++;
@@ -25,6 +42,12 @@ public class MyList<E> implements List<E> {
 		throw new IndexOutOfBoundsException();
 	}
 	
+	/**
+	 * Adds element after the given position and updates the list order accordinlfy.
+	 * 
+	 * @param target the node after which new node is linked
+	 * @param object the new object to be added
+	 * **/
 	private void addAfter(Element target, Element object) {
 		object.next = target.next;
 		target.next = object;
@@ -292,15 +315,30 @@ public class MyList<E> implements List<E> {
 	}
 
 
+	/***
+	 * Support structure for linked list.
+	 * Stores the value and the next element in a container class.
+	 * **/
 	private class Element<T> {
 		
+		/***
+		 * The value stored in this element.
+		 **/
 		private T value;
 		
+		/**
+		 * The next linked element.
+		 * **/
+		private Element next = null;
+		
+		/**
+		 * Creates a new Element.
+		 * 
+		 * @param value value stored in this element.
+		 * **/
 		Element(T value) {
 			this.value = value;
 		}
-		
-		private Element next = null;
 		
 	}
 	

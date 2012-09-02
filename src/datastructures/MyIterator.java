@@ -2,6 +2,9 @@ package datastructures;
 
 import java.util.*;
 
+/**
+ * Provides a generic iteration interface used in other classes.
+ * **/
 public class MyIterator<E> implements ListIterator<E>  {
 	
 	private List<E> list = new MyList<E>();

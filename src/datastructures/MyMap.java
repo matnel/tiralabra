@@ -2,6 +2,9 @@ package datastructures;
 
 import java.util.*;
 
+/**
+ * Implelemts a hash table.
+ * */
 public class MyMap<K, V> implements Map<K, V> {
 	
 	/**
@@ -70,7 +73,9 @@ public class MyMap<K, V> implements Map<K, V> {
 	}
 	
 	/**
-	 * Get's the Bucket for key. A bucket stores information of key, value and potentially next linked item.
+	 * Gets the Bucket for key. A bucket stores information of key, value and potentially next linked item.
+	 * 
+	 * @param key key searched.
 	 * */
 	private Bucket getBucket(K key) {
 		// check which bucket to return

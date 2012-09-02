@@ -8,7 +8,7 @@ import java.util.Set;
  * */
 public class MySet<E> extends MyList<E> implements Set<E> {
 
-	
+	@Override
 	public boolean add(E element) {
 		if( this.contains( element ) ) {
 			return false;
@@ -17,10 +17,12 @@ public class MySet<E> extends MyList<E> implements Set<E> {
 		return true;
 	}
 	
+	@Override
 	public void add(int index, E element) {
 		throw new UnsupportedOperationException();
 	}
 	
+	@Override
 	public boolean addAll(Collection<? extends E> elements) {
 		boolean ok = false;
 		for(E e : elements) {
@@ -31,6 +33,7 @@ public class MySet<E> extends MyList<E> implements Set<E> {
 		return ok;
 	}
 	
+	@Override
 	public boolean addAll(int index, Collection<? extends E> elements) {
 		throw new UnsupportedOperationException();
 	}
