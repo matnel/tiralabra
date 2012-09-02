@@ -91,7 +91,22 @@ Luokkaan on lisäksi lisätty suojattu sisäluokka \texttt{QueueNode}. Tämän l
 
 \subsubsection{Dikstran algoritmi}
 
+Dikstran algoritmi käy läpi kaikki verkon solmut, ja kullekin solmulle laskee etäisyyden solmun vierussolmuille. Jos etäisyys johonkin vierussolmuun solmuun on pienempi kuin aikaisemmat löydetyt etäisyydet, niin etäisyys päivitetään ja vierussolmu lisätään tarkasteltavien solmujen joukkoon. Tätä jatketaan, kunnes kaikille solmuille on saatu laskettua etäisyys.
+
 \subsubsection{A*-algoritmi}
+
+A* eroaa Dikstrasta ennenkaikkea rajaten haun suuntaa kohti tavoitesolmua ja pysäyttää suorituksen kun tavoitesolmu on läydetty. Haun rajaamiseen käytetään hyödyksi heuristista funktiota $h$, jonka avulla arvioidaan kuinka suuri etäisyys kahden solmun välillä on.
+
+Yllä kuvattu algoritmi on toteutettu metodissa \texttt{path(Node from, Node to)}, ja heuristinen arviointifunktio on eriytetty metodiin \texttt{estimate(Node a, Node b)}. Heuristinen apufunktio on toteutettu protected-näkyvyystasolla, jolloin erilaiset aliluokat voisivat toteuttaa erilaisia heuristisia funktiota.
+
+Tässä työssä vertaillaan kahta erilaista heuristista funktiota, Perinteiset heuristiset funktiot, kuten eukliidisen etäisyyden käyttö tai Manhattan etäisyys, olettavat, että kullekin solmulle on yksikäsitteinen paikka, jota käytetään heuristisen funktion ominaisuutena, esimerkiksi $\sqrt{ (x-x_0)^2 + (y-y_0)^2 }$. Kuitenkin, useissa verkostoissa -- kuten sosiaalisessa verkostossa -- ei tälläinen etäisyys ole mielekäs suure. Tämän takia ehdotan kahta erilaista heuristista suuretta, joiden suorituskykyä pyritään vertaamaan:
+
+\begin{itemize}
+\item Yhteisten solmujen määrä: $$ |\mathcal{G}| - \mathcal{N}( v_x , v_g )$$
+\item Yhteisten solmujen määrä tasapainotettuna tarkastettavan solmun painolla $$ \mathcal{E}_w ( v_x ) \cdot ( |\mathcal{G}| - \mathcal{N}( v_x , v_g ) ) $$
+\end{itemize}
+
+Yllä $|\mathcal{G}|$ on koko verkon solmujen määrä, $v_x$ nykyinen solmu, $v_g$ tavoitesolmu, $\mathcal{N}$ funktio, joka palauttaa kahden solmun yhteisten alkioiden määrän ja $ \mathcal{E}_w $ funktio, joka palauttaa solmun kaarien painon.
 
 \subsection{Tiedosto-operaatiot}
 \label{io}
