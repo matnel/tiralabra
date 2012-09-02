@@ -2,6 +2,9 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.junit.Before;
@@ -171,37 +174,87 @@ public class MyHeapTest {
 
 	@Test
 	public void testAddAll() {
-		fail("Not yet implemented");
+		Collection<Integer> c = new ArrayList<Integer>();
+		c.add(0);
+		c.add(1);
+		c.add(2);
+		test.addAll( c );
+		for( Integer i : c ) {
+			assertEquals("Heap not correct", i, test.poll() );
+		}
 	}
 
 	@Test
 	public void testRemoveAll() {
-		fail("Not yet implemented");
+		Collection<Integer> c = new ArrayList<Integer>();
+		c.add(0);
+		c.add(1);
+		c.add(2);
+		test.addAll( c );
+		c.remove( 2 );
+		Collection<Integer> c1 = new ArrayList<Integer>();
+		c1.add( 4 );
+		assertFalse( test.removeAll( c1 ) );
+		assertTrue( test.removeAll( c ) );
+		assertEquals("Size not correct", 1, test.size() );
+		assertEquals("Heap not correct", 2, test.poll().intValue() );
 	}
 
 	@Test
 	public void testContainsAll() {
-		fail("Not yet implemented");
+		Collection<Integer> c = new ArrayList<Integer>();
+		c.add(0);
+		c.add(1);
+		c.add(2);
+		test.addAll( c );
+		assertTrue("Not all elements in heap", test.containsAll( c ) );
 	}
 	
 	@Test
 	public void testRetainAll() {
-		fail("Not yet implemented");
+		Collection<Integer> c = new ArrayList<Integer>();
+		c.add(0);
+		c.add(1);
+		c.add(2);
+		test.addAll( c );
+		assertFalse( test.retainAll( c ) );
+		c.remove(1);
+		assertTrue( test.retainAll( c ) );
+		assertEquals("Heap not correct", 0, test.poll().intValue() );
+		assertEquals("Heap not correct", 2, test.poll().intValue() );
 	}
 
 	@Test
 	public void testToArray() {
-		fail("Not yet implemented");
+		Integer[] values = { 0, 1, 2 };
+		for( Integer i : values ){
+			test.add( i );
+		}
+		assertArrayEquals( values, test.toArray() );
 	}
 
 	@Test
 	public void testToArrayTArray() {
-		fail("Not yet implemented");
+		Integer[] values = { 0, 1, 2 };
+		for( Integer i : values ){
+			test.add( i );
+		}
+		Integer[] target = new Integer[3];
+		assertArrayEquals( values, test.toArray( target ) );
 	}
 
 	@Test
 	public void testIterator() {
-		fail("Not yet implemented");
+		Collection<Integer> c = new ArrayList<Integer>();
+		c.add(0);
+		c.add(2);
+		c.add(1);
+		test.addAll( c );
+		Iterator i = test.iterator();
+		assertEquals( 0 , i.next() );
+		assertEquals( 1 , i.next() );
+		assertEquals( 2 , i.next() );
+		assertTrue("Heap should not be modified", test.containsAll( c ) );
 	}
 
 }

@@ -2,8 +2,11 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.junit.After;
 import org.junit.Before;
@@ -280,37 +283,87 @@ public class MyListTest {
 
 	@Test
 	public void testSubList() {
-		fail("Not yet implemented");
+		list.add("Kissa");
+		list.add("Koira");
+		list.add("Kirahvi");
+		java.util.List<String> l = list.subList(0, 1);
+		MyList<String> correct = new MyList<String>();
+		correct.add("Kissa");
+		assertEquals( "Size of sublist correct", 1, l.size() );
+		assertEquals("sublist has correct element", "Kissa", l.get(0) );
 	}
 
 	@Test
 	public void testToArray() {
-		fail("Not yet implemented");
+		list.add("Kissa");
+		list.add("Koira");
+		list.add("Kirahvi");
+		String[] correct = {"Kissa", "Koira", "Kirahvi"};
+		assertArrayEquals( correct, list.toArray() );
 	}
 
 	@Test
 	public void testToArrayTArray() {
-		fail("Not yet implemented");
+		list.add("Kissa");
+		list.add("Koira");
+		list.add("Kirahvi");
+		String[] correct = {"Kissa", "Koira", "Kirahvi"};
+		String[] target = new String[3];
+		assertArrayEquals( correct, list.toArray( target ) );
 	}
 	
 	@Test
 	public void testIterator() {
-		fail("Not yet implemented");
+		Collection<String> c = new ArrayList<String>();
+		c.add("Kissa");
+		c.add("Koira");
+		c.add("Kirahvi");
+		list.addAll( c );
+		Iterator<String> i = list.iterator();
+		for( String v : c) {
+			assertEquals( v, i.next() );
+		}
 	}
 	
 	@Test
 	public void testRetainAll() {
-		fail("Not yet implemented");
+		Collection<String> c = new ArrayList<String>();
+		c.add("Kissa");
+		c.add("Koira");
+		c.add("Kirahvi");
+		list.addAll( c );
+		assertFalse( list.retainAll( c ) );
+		c.remove("Koira");
+		assertTrue( list.retainAll( c ) );
+		assertTrue( list.containsAll( c ) );
+		assertEquals( 2, list.size() );
 	}
 	
 	@Test
 	public void testListIterator() {
-		fail("Not yet implemented");
+		Collection<String> c = new ArrayList<String>();
+		c.add("Kissa");
+		c.add("Koira");
+		c.add("Kirahvi");
+		list.addAll( c );
+		ListIterator<String> i = list.listIterator();
+		for( String v : c) {
+			assertEquals( v, i.next() );
+		}
 	}
 
 	@Test
 	public void testListIteratorInt() {
-		fail("Not yet implemented");
+		Collection<String> c = new ArrayList<String>();
+		c.add("Kissa");
+		c.add("Koira");
+		c.add("Kirahvi");
+		list.addAll( c );
+		ListIterator<String> i = list.listIterator( 1 );
+		c.remove("Kissa");
+		for( String v : c) {
+			assertEquals( v, i.next() );
+		}
 	}
 
 }

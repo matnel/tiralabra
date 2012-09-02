@@ -7,6 +7,9 @@ import java.util.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.sun.tools.jdi.EventSetImpl.Itr;
+
 import datastructures.*;
 
 public class MyIteratorTest {
@@ -124,12 +127,19 @@ public class MyIteratorTest {
 
 	@Test
 	public void testSet() {
-		fail("Not yet implemented");
+		iterator.next();
+		iterator.set( 3 );
+		assertEquals(3, iterator.next().intValue() );
+		assertEquals(7, iterator.next().intValue() );
 	}
 	
 	@Test
 	public void testAdd() {
-		fail("Not yet implemented");
+		iterator.add( 1 );
+		for( int i = 0; i < 5; i++ ) {
+			iterator.next();
+		}
+		assertEquals(1, iterator.next().intValue() );
 	}
 
 }
