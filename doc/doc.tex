@@ -148,7 +148,7 @@ Lyhyimmän polun etsimiseen tarkoitetussa testissä käytettiin apuna kolmentois
 
 Täsmällisesti testit toteutettiin seuraaville tapauksille:
 
-\begin{itemize}
+\begin{enumerate}
 \item Solmun 0 etäisyys kaikista muista solmuista tulee olla ääretön.
 \item Kaikkien muiden solmujen etäisyys solmusta 0 tulee olla ääretön.
 \item Etäisyys solmusta 12 solmuun 11 tulee olla 1.
@@ -157,11 +157,53 @@ Täsmällisesti testit toteutettiin seuraaville tapauksille:
 \item Lyhyin reitti solmusta 5 solmuun 6 kulkee solmujen 2 ja 3 kautta, ja muodostetun reitin pituus on 8.
 \item Lyhyin reitti solmusta 1 solmuun 11 kulkee solmujen 2, 3 ja 6 kautta, ja muodostetun reitin pituus on 6.
 \item Lyhyin reitti solmusta 4 solmuun 5 kulkee solmun 8 kautta, ja muodostetun reitin pituus on 2.
-\end{itemize}
+\label{network_test}
+\end{enumerate}
 
-Testit on toteutettu abstraktille yläluokalle \texttt{ShortestPathGraph}, jolloin samaa testikoodia voidaan käyttää sekä luokille \texttt{AStarPathGraph} sekä \texttt{DikstraPathGraph}.
+Testit on toteutettu abstraktille yläluokalle \texttt{ShortestPathGraph}, jolloin samaa testikoodia voidaan käyttää sekä luokille \texttt{AStarPathGraph} sekä \texttt{DikstraPathGraph}. Kun testataan A*-implementaatiota, on syytä asettaa heuristiseksi funktioksi nollafunktio, jolloin algoritmi palautuu Dikstan algoritmiksi -- jolle on taattua löytää lyhyin reitti (katso tarkemmin taulukkko \ref{heuristic_correct}).
 
 \section{Evaluaatio}
+
+Ohjelmaa on järkevää evaluoida kahdesta eri näkökulmasta: ratkaisuiden oikeellisuus sekä suoritusaika. Kuten yllä mainittiin, sekä Dikstran algoritmi että A*-toteutus heuristisella funktiolla $h(v_x,v_g) = 0$ toimivat oikein. Tällöin on mielekästä keskittyä arvioimaan heuristisia funktiota $h'_1( v_x, v_g ) = |\mathcal{G}| - \mathcal{N}( v_x , v_g )$ sekä $ h'_2( v_x, v_g ) = \mathcal{E}_w ( v_x ) \cdot ( |\mathcal{G}| - \mathcal{N}( v_x , v_g ) ) $. Kappaleessa \ref{heuristic_correctness} esitetään yksinkertaisia tuloksia tähän liittyen. Koska kyseessä on tietorakenteiden ja algoritmien harjoitustyö, myös suoritusaika on mielekäs vertailukohta, olen vertaillut Dikstran algoritmia sekä A*-algoritmia kummallakin heuristiikalla luvussa \ref{suoritusaika}.
+
+\begin{table}
+\begin{tabular}{l|c|c }
+Tapaus & $ |\mathcal{G}| - \mathcal{N}( v_x , v_g )$  & $ \mathcal{E}_w ( v_x ) \cdot ( |\mathcal{G}| - \mathcal{N}( v_x , v_g ) ) $ \\ 
+\hline 
+1 \& 2 & 0 & 0 \\ 
+3 \& 4 & 0 & 0 \\  
+5 & 1 & 0 \\
+6 & 0 & 0 \\
+7 & 0 & 0 \\
+8 & 2 & 0 \\
+\hline
+Väärin & 2 & 0 \\
+\hline 
+\end{tabular} 
+\caption{Heuristiikoiden virheellisyys}
+Eri heuristiikoiden virheellisyys, yksikköä. Testit kuvattu sivulla \pageref{network_test}.
+\label{heuristic_correct}
+\end{table}
+
+\subsection{Heuristiikoiden oikeellisuus}
+\label{heuristic_correctness}
+
+Kumpaakin ehdotettua A*-heuristiikkaa testattiin yksinkertaisella testiverkolla (kuva \ref{testiverkko}, kuvaus sivulla \pageref{network_test}). Tämä testaus ei luonnollisestikaan ole kokonaisvaltainen, eikä tuloksen perusteella tulisi päätellä $h'_2$ -heuristiikan olevan parempi kuin $h'_1$. Tämän testaamiseksi olisi välttämätöntä käsitellä laajempia verkkoja ja suorittaa täsmällisempi arvio jokaisesta solmusta jokaiseen solmuun, sekä verrata tuloksia heuristiikoiden kanssa. Testausprosessi voisi siis olla seuraava:
+
+\begin{algorithmic}
+\ForAll{$e_1$ in $\mathcal{G}$}
+\ForAll{$e_2$ in $\matgcal{G} - e_1$}
+\State $correct \gets $ path$_\mathfrak{D}( e_1 , e_2 )$
+\State $heuristic_1 \gets $ path$_\mathfrak{A_{H1}}( e_1 , e_2 )$
+\State $heuristic_2 \gets $ path$_\mathfrak{A_{H2}}( e_1 , e_2 )$
+\EndFor
+\EndFor
+\end{algorithmic}
+
+Tulos kuitenkin osoittaa heuristisen ratkaisun keskeisen piirteen: vaikka suoritusaikaa pystytään vähentämään, niin ratkaisun tarkkuutta ei tällöin voida taata.
+
+\subsection{Suoritusaika}
+\label{suoritusaika}
 
 \bibliographystyle{apalike} 
 \bibliography{doc}
