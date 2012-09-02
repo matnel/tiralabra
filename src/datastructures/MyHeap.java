@@ -64,7 +64,8 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 
 	@Override
 	public boolean contains(Object o) {
-		E target = (E) o;
+		// E target = (E) o;
+		/* No, it's not!
 		// as this heap is a min-heap, the data should always be sorted
 		// therefore, binary search can be used for this (log n)
 		int upper = size - 1;
@@ -82,6 +83,12 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 				lower = currentI + 1;
 			} else {
 				upper = currentI - 1;
+			}
+		}
+		*/
+		for( int i = 0; i < size; i++ ) {
+			if( o.equals( data[i] ) ) {
+				return true;
 			}
 		}
 		return false;
@@ -108,12 +115,10 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 		boolean state = false;
 		for( int i = 0; i < size; i++ ) {
 			if( ! collection.contains( data[i] ) ) {
-				System.out.println( data[i] );
 				state = true;
 				remove( data[i] );
 			}
 		}
-		System.out.println("===");
 		return state;
 	}
 

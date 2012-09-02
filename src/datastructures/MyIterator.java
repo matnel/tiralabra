@@ -53,7 +53,6 @@ public class MyIterator<E> implements ListIterator<E>  {
 
 	@Override
 	public boolean hasPrevious() {
-		System.out.println( previous );
 		return previous != null;
 	}
 
