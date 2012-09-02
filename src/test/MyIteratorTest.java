@@ -141,5 +141,15 @@ public class MyIteratorTest {
 		}
 		assertEquals(1, iterator.next().intValue() );
 	}
-
+	
+	@Test(expected=IllegalStateException.class)
+	public void testSetException() {
+		iterator.set( 0 );
+	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void testSetException2() {
+		iterator.add(3);
+		iterator.set( 0 );
+	}
 }
