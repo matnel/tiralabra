@@ -149,7 +149,29 @@ Kun tietorakenteeksi $graph$ valitaan hajautustaulu, on operaatiot lisäämiseen
 \section{Testaus}
 \label{test}
 
-Ohjelman kukin luokka on testattu erikseen JUnit-testein. Arvio code coveragesta...
+Ohjelman kukin luokka on testattu erikseen JUnit-testein. Koodikattavuus kunkin luokan kohdalta on esitetty taulukossa \ref{cov}. Suurin poikkeus tavoitteena olevasta täydestä koodikattavuudesta aiheutuu \texttt{MyMap}-luokasta. Tarkempi tarkastelu osoittaa, että kyseessä on yksityiset apumetodit, joita ei tällä hetkellä käytetä toteutuksessa. Nämä voisi tietenkin poistaa koodikattavuuden nostamiseksi, mutta en itse pidä koodikattavuutta ainoana hyvänä mittarina: tulisi myös arvioida testien laadukkuutta. \texttt{MyIterator}-testin kohdalla ongelmana on yksinkertainen OR-lause ehdossa, koska toteutuksen kannalta ei ole mahdollista, että tilana olisi samaan aikaan "edellinen alkio annettu" ja "seuraava alkio annettu". Muutoin testit osoittavat varsin hyvää, yli 95 \% testikattavuutta.
+
+\begin{table}
+\begin{tabular}{l|r}
+Luokka & Kattavuus ( \% ) \\ 
+\hline 
+\texttt{Graph} & 100 \\ 
+\texttt{Node} & 100 \\ 
+\texttt{ShortestPathGraph} & 100 \\
+\texttt{AStarPathGraph} & 97.6 \\
+\texttt{DisktraPathGraph} & 100 \\
+\hline
+\texttt{DataReader} & 97.0 \\
+\hline 
+\texttt{MyMap} & 88.4 \\
+\texttt{MyList} & 99.1 \\
+\texttt{MyHeap} & 98.8 \\
+\texttt{MyIterator} & 87.2 \\
+\texttt{MySet} & 100 \\
+\end{tabular} 
+\caption{Testauksen koodikattavuus}
+\label{cov}
+\end{table}
 
 Lyhyimmän polun etsimiseen tarkoitetussa testissä käytettiin apuna kolmentoista solmun verkkoa, joka on esitetty kuvassa \ref{testiverkko}. Verkko on pääosin symmetrinen, mutta kaari solmusta 12 solmuun 11 on yksisuuntainen. Kaarien painoissa on myös luotu tilanteita, joissa tietoisesti lyhyin reitti vie enemmän askelia -- tällä on tarkoitus testata reitinhakualgoritmin toimintaa.
 
@@ -175,13 +197,15 @@ Täsmällisesti testit toteutettiin seuraaville tapauksille:
 
 Testit on toteutettu abstraktille yläluokalle \texttt{ShortestPathGraph}, jolloin samaa testikoodia voidaan käyttää sekä luokille \texttt{AStarPathGraph} sekä \texttt{DikstraPathGraph}. Kun testataan A*-implementaatiota, on syytä asettaa heuristiseksi funktioksi nollafunktio, jolloin algoritmi palautuu Dikstan algoritmiksi -- jolle on taattua löytää lyhyin reitti (katso tarkemmin taulukkko \ref{heuristic_correct}).
 
+\texttt{Graph}
+
 \section{Evaluaatio}
 
 Ohjelmaa on järkevää evaluoida kahdesta eri näkökulmasta: ratkaisuiden oikeellisuus sekä suoritusaika. Kuten yllä mainittiin, sekä Dikstran algoritmi että A*-toteutus heuristisella funktiolla $h(v_x,v_g) = 0$ toimivat oikein. Tällöin on mielekästä keskittyä arvioimaan heuristisia funktiota $h'_1( v_x, v_g ) = |\mathcal{G}| - \mathcal{N}( v_x , v_g )$ sekä $ h'_2( v_x, v_g ) = \mathcal{E}_w ( v_x ) \cdot ( |\mathcal{G}| - \mathcal{N}( v_x , v_g ) ) $. Kappaleessa \ref{heuristic_correctness} esitetään yksinkertaisia tuloksia tähän liittyen. Koska kyseessä on tietorakenteiden ja algoritmien harjoitustyö, myös suoritusaika on mielekäs vertailukohta, olen vertaillut Dikstran algoritmia sekä A*-algoritmia kummallakin heuristiikalla luvussa \ref{suoritusaika}.
 
 \begin{table}
-\begin{tabular}{l|c|c }
-Tapaus & $ |\mathcal{G}| - \mathcal{N}( v_x , v_g )$  & $ \mathcal{E}_w ( v_x ) \cdot ( |\mathcal{G}| - \mathcal{N}( v_x , v_g ) ) $ \\ 
+\begin{tabular}{l|c|c}
+Tapaus & $ h'_1 $  & $ h'_2 $ \\ 
 \hline 
 1 \& 2 & 0 & 0 \\ 
 3 \& 4 & 0 & 0 \\  
@@ -217,6 +241,36 @@ Tulos kuitenkin osoittaa heuristisen ratkaisun keskeisen piirteen: vaikka suorit
 
 \subsection{Suoritusaika}
 \label{suoritusaika}
+
+Suoritusaikaa arvioidaan annetulla ohjelmalla \cite[Liite~1]{aalto}, joka laskee suoritusajan kymmenellä ajokerralla kullekin algoritmille. Useamman ajokerran tavoite on vähentää satunnaisvaihtelun aiheuttamaa häiriötä tuloksissa. Suoritusajan arvioinnissa kasvatettiin sekä solmujen että kaarien määrää, ja tarkasteltiin niiden vaikutusta. Arviossa käytettävät verkot ovat satunnaisverkkoja.
+
+Valitettavasti virtuaalikoneen käytettävissä oleva muisti ei riittänyt ohjelman suoritukseen. Muistin kokoa (\texit{heap size}) kasvatettiin kahteen gigatavuun, mutta tästä huolimatta muisti ei riittänyt yli 10 000 solmun verkon käsittelyyyn. Tämä viittaa muistivuotoon tai liian suureen olioiden käyttöön ohjelman kehityksessä.
+
+Saadut tulokset (taulukko \ref{koko_suoritusaika}) ovatkin siis viitteellisiä, eikä niitä tulisi tulkita suoraan. Lisäksi, kahden datapisteen avulla ei tulisi tehdä liian suuria yleistyksiä, varsinkaan $\mathcal{O}(n)$-mielessä.
+
+\begin{table}
+\begin{tabular}{l|r|r|r}
+Verkon koko & Dikstra & $h'_1$ & $h'_2$ \\ 
+\hline 
+100  & $2.6 \cdot 10^7 $ & $9.3 \cdot 10^6 $ & $ 1.2 \cdot 10^7 $ \\ 
+1000 & $8.2 \cdot 10^8 $ & $2.1 \cdot 10^9 $ & $ 6.1 \cdot 10^8 $ \\
+\end{tabular} 
+\caption{Alkioiden koon vaikutus suoritusaikaan}
+\label{koko_suoritusaika}
+\end{table}
+
+Kaarien lukumäärän vaikutus oli huomattavasti helpompi laskennallinen suoritus 100 solmun verkolle. Kuva \ref{kaaret_suoritusaika} esittää saatuja tuloksia: havaitaan, että sekä Dikstran että A*-algoritmien mukautuminen kaarien määrän kasvuun on samankaltainen hitaasti kasvava käyrä. Huomaa, että x-akselilla on yksittäisen kaaren todennäköisyys solmujen välillä, ei itse kaarien määrä. Kiintoisana ilmiönä $h'_1$ on selvästi herkempi kaarien määrän kasvulle, mikä havaitaan käyrän vaihtelulla.
+
+\begin{figure}
+\includegraphics[scale=.6]{kaarien_maara.png} 
+\caption{Kaarien määrän vaikutus suoritusaikaan}
+\label{kaaret_suoritusaika}
+Kahden alkion välisen kaaren todennäköisyyden vaikutus suoritusaikaan 100 solmun verkossa.
+\end{figure}
+
+\section{Johtopäätökset}
+
+Työssä testattiin kahta erilaista heuristiikkaa A*-algoritmissa, jotka molemmat painottivat yhteisten vierussolmujen määrää heuristisena suureena. Vaikuttaa siltä, että tällä menetelmällä ei kuitenkaan saavuteta merkittävää suorituskyvyn kasvua suhteessa Dikstran algoritmiin, mutta empiirinen analyysiosuus on jäänyt merkittävästi vajavaiseksi solmujen lukumäärän kasvun vaikutuksen arvioinnissa. Lisäksi vastaisuudessa analyysissä tulisi käyttää satunnaisesti generoidun graafin sijaan graafia sosiaalisesta verkostosta tai kehittyneempää menetelmää tuottaa sosiaalisen verkoston kaltainen graafi.
 
 \bibliographystyle{apalike} 
 \bibliography{doc}
