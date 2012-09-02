@@ -79,7 +79,7 @@ public class MyIterator<E> implements ListIterator<E>  {
 			throw new IllegalStateException();
 		}
 		if( state == LAST.NEXT || state == LAST.PREVIOUS ) {
-			list.add( index, o );
+			list.add( index - 1, o );
 		}
 		
 	}

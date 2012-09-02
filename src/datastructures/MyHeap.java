@@ -106,13 +106,15 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 	@Override
 	public boolean retainAll(Collection<?> collection) {
 		boolean state = false;
-		for( Object o : data ) {
-			if( ! collection.contains( o ) ) {
+		for( int i = 0; i < size; i++ ) {
+			if( ! collection.contains( data[i] ) ) {
+				System.out.println( data[i] );
 				state = true;
-				remove( o );
+				remove( data[i] );
 			}
 		}
-		return false;
+		System.out.println("===");
+		return state;
 	}
 
 	@Override

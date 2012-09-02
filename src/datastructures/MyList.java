@@ -217,7 +217,7 @@ public class MyList<E> implements List<E> {
 				remove( o );
 			}
 		}
-		return false;
+		return state;
 	}
 
 	@Override
@@ -258,7 +258,7 @@ public class MyList<E> implements List<E> {
 		int index = 0;
 		Element<E> current = first.next;
 		while( current != null ) {
-			if( index > min && max < index ) {
+			if( index >= min && index < max ) {
 				newList.add(current.value);
 			}
 			index++;
@@ -285,7 +285,7 @@ public class MyList<E> implements List<E> {
 		}
 		Element<E> current = first.next;
 		for(int i = 0; i < table.length; i++ ) {
-			table[i] =  (T) current;
+			table[i] =  (T) current.value;
 			current = current.next;
 		}
 		return table;
