@@ -107,7 +107,7 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 	public boolean retainAll(Collection<?> collection) {
 		boolean state = false;
 		for( Object o : data ) {
-			if( collection.contains( o ) ) {
+			if( ! collection.contains( o ) ) {
 				state = true;
 				remove( o );
 			}
@@ -117,20 +117,32 @@ public class MyHeap<E extends Comparable> implements Queue<E> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		return toArray( new Object[ size ] );
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> T[] toArray(T[] table) {
+		if( table.length < size ) {
+			table = (T[]) new Object[ size ];
+		}
+		for(int i = 0; i < table.length; i++ ) {
+			table[i] =  (T) data[i];
+		}
+		return table;
 	}
 	
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		MyList<E> list = new MyList<E>();
+		// copy heap
+		while( peek() != null ) {
+			list.add( poll() );
+		}
+		// add everytihing back to heap too
+		for( E e : list ) {
+			add( e );
+		}
+		return new MyIterator<E>( list );
 	}
 
 	// HEAP related implementation

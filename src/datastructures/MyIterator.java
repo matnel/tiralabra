@@ -9,6 +9,10 @@ public class MyIterator<E> implements ListIterator<E>  {
 	private E previous;
 	private E current;
 	
+	private enum LAST { NO, NEXT, PREVIOUS };
+	
+	private LAST state = LAST.NO;
+	
 	public MyIterator(List <E> list) {
 		// copy list for this iterator
 		for(int i = 0; i < list.size(); i++ ) {
@@ -29,17 +33,21 @@ public class MyIterator<E> implements ListIterator<E>  {
 		previous = current;
 		current = list.remove(0);
 		index++;
+		
+		state = LAST.NEXT;
+		
 		return current;
 	}
 
 	@Override
 	public void remove() {
-		// TODO: bucnh of exceptions to be thrown?
+		state = LAST.NO;
 		list.remove(0);
 	}
 
 	@Override
 	public void add(E arg0) {
+		state = LAST.NO;
 		list.add(arg0);
 	}
 
@@ -56,6 +64,7 @@ public class MyIterator<E> implements ListIterator<E>  {
 
 	@Override
 	public E previous() {
+		state = LAST.PREVIOUS;
 		return previous;
 	}
 
@@ -65,8 +74,14 @@ public class MyIterator<E> implements ListIterator<E>  {
 	}
 
 	@Override
-	public void set(E arg0) {
-		// TODO: add me
+	public void set(E o) {
+		if( state == LAST.NO ) {
+			throw new IllegalStateException();
+		}
+		if( state == LAST.NEXT || state == LAST.PREVIOUS ) {
+			list.add( index, o );
+		}
+		
 	}
 
 }

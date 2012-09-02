@@ -209,8 +209,14 @@ public class MyList<E> implements List<E> {
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
+	public boolean retainAll(Collection<?> collection) {
+		boolean state = false;
+		for( E o : this ) {
+			if( ! collection.contains( o ) ) {
+				state = true;
+				remove( o );
+			}
+		}
 		return false;
 	}
 
@@ -269,18 +275,20 @@ public class MyList<E> implements List<E> {
 	@Override
 	public Object[] toArray() {
 		Object[] list = new Object[ size() ];
-		Element<E> current = first.next;
-		for(int i = 0; i < list.length; i++ ) {
-			list[i] = current;
-			current = current.next;
-		}
-		return null;
+		return toArray( list );
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> T[] toArray(T[] table) {
+		if( table.length < size() ) {
+			table = (T[]) new Object[ size() ];
+		}
+		Element<E> current = first.next;
+		for(int i = 0; i < table.length; i++ ) {
+			table[i] =  (T) current;
+			current = current.next;
+		}
+		return table;
 	}
 
 
