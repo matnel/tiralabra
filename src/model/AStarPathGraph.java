@@ -41,6 +41,11 @@ public class AStarPathGraph extends ShortestPathGraph {
 
 	@Override
 	public List<Node> path(Node from, Node to) {
+		// test if a path can be achieved
+		if( to.neighbors().keySet().isEmpty() ) {
+			return new MyList<Node>();
+		}
+		
 		// list of items that must be checked
 		Queue<QueueNode> check = new MyHeap<QueueNode>();
 		
