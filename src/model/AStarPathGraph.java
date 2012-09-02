@@ -29,8 +29,14 @@ public class AStarPathGraph extends ShortestPathGraph {
 		Collection<Node> neighbors = a.neighbors().keySet();
 		Collection<Node> bNeighbors = b.neighbors().keySet();
 		neighbors.retainAll( bNeighbors );
-		// return networkSize - neighbors.size();
-		return 0;
+		int similarity = networkSize - neighbors.size();
+		double weight = 0;
+		for( Double d : a.neighbors().values() ) {
+			weight += d;
+		}
+		// return similarity; // first heuristic
+		return weight * similarity;
+		// return 0; // use this when testing algorithm!
 	}
 
 	@Override
