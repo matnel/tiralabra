@@ -2,16 +2,12 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
 import io.DataReader;
 
-import model.Graph;
+import model.*;
 
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -54,7 +50,7 @@ public class DataReaderTest {
 		assertEquals("Item has incorrect name", "c", g.edges().get(1).name() );
 		assertEquals("Item has incorrect name", "a", g.edges().get(2).name() );
 		
-		double[][] result = { {0,-1,5}, {-1,0,-1}, {10,100,0} };
+		double[][] result = { {0, Node.NOT_CONNECTED ,5}, { Node.NOT_CONNECTED ,0, Node.NOT_CONNECTED}, {10,100,0} };
 		assertArrayEquals("Matrix not generated correctly", result, g.matrix() );
 	}
 	
@@ -73,6 +69,12 @@ public class DataReaderTest {
 	@Test(expected=Exception.class)
 	public void testInvalid3() throws Exception {
 		String test = "a:b:1" + br + "a:b:2";
+		Graph g = DataReader.readFile( createFile(test) );
+	}
+	
+	@Test(expected=Exception.class)
+	public void testInvalid4() throws Exception {
+		String test = "a:b";
 		Graph g = DataReader.readFile( createFile(test) );
 	}
 	
