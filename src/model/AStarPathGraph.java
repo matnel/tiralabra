@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -23,6 +24,12 @@ public class AStarPathGraph extends ShortestPathGraph {
 	 * @return the estimated value of the path length.
 	 * */
 	protected double estimate(Node a, Node b) {
+		int networkSize = this.size();
+		// calculate number of same nodes
+		Collection<Node> neighbors = a.neighbors().keySet();
+		Collection<Node> bNeighbors = b.neighbors().keySet();
+		neighbors.retainAll( bNeighbors );
+		// return networkSize - neighbors.size();
 		return 0;
 	}
 
@@ -78,7 +85,7 @@ public class AStarPathGraph extends ShortestPathGraph {
 					
 					// remove from que && update back to new position
 					check.remove( new QueueNode( n , -1 ) );
-					check.add( new QueueNode(n, currentDistance + estimate(n, to) ) );
+					check.add( new QueueNode(n, candidate + estimate(n, to) ) );
 				}
 				
 			}
