@@ -14,7 +14,7 @@
 \author{Matti Nelimarkka}
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{1ex}
+\setlength{\parskip}{10pt}
 
 \maketitle
 
@@ -62,12 +62,23 @@ Toteuttava luokka & Rajapinta \\
 \texttt{MySet} & \href{http://docs.oracle.com/javase/6/docs/api/java/util/Set.html}{\texttt{java.util.Set}} \\ 
 \texttt{MyIterator} & \href{http://docs.oracle.com/javase/6/docs/api/java/util/ListIterator.html}{\texttt{java.util.ListIterator}} \\ 
 \end{tabular}
-
-On syytä huomata, että \texttt{MyHeap}-luokan \texttt{contains}-metodi eroaa esimerkiksi \href{http://docs.oracle.com/javase/6/docs/api/java/util/PriorityQueue.html}{\texttt{PriorityQueue}}-dokumentaation lupaamasta suoritusajasta $\mathcal{O}(n)$. Koska tiedämme, että sisäisen toteutuksen lista on aina järjestyksessä, on mahdollista käyttää puolitushakua, joka takaa suoritukseen ajan $\mathcal{O}(\log n)$.
-
 \caption{Omien tietorakenteiden vastaavuus Javan tietorakenteiden kanssa}
 \label{omat_tietorakenteet}
 \end{table}
+
+Hajautustaulun toteuttaa luokka \texttt{MyMap}, sen sisäinen toteutus on käyttää ylivuotolistoja törmäysten hallintaan. Täyttöasteeksi sallitaan 90 \%, minkä jälkeen taulun kokoa kasvatetaan ja alkiot uudelleenhajautetaan. Tällä asetuksella suurta määrää törmäyksiä ei pitäisi tapahtua, olettaen, että hajautusfunktio jakaa arvoja tasaisesti koko alueelle. Tällöin saavutetaan\footnote{Laskennallisesti usein myös huomioidaan mahdolliset ylivuodot, jolloin keskimääräiseksi suoritusajaksi esitetään tarkempi $\mathcal{O}(n) = 1 + \frac{n}{k}$.} $\mathcal{O}(n) = 1$-suoritusaika operaatioille avaimen lisäys, avainta vastaavan arvon hakeminen ja avaimen olemassaolon tarkistaminen. Vastaavasti operaatiot kaikkien arvojen hakemiseen, kaikkien avainten hakemiseen sekä alkioiden lukumäärän laskemiseen ovat lineaarisia. Tilankäyttö on myös lineraarinen.
+
+Minimikeon toteuttaa luokka \texttt{MyHeap}, sen sisäinen toteutus on binäärikeko, mikä mahdollistaa alkion lisäämisen ja poistamisen ajassa $\mathcal{O}(n) = \log n$. Pienimmän arvon noutaminen, alkioiden lukumäärän sekä tyhjyyden tarkistaminen suoritaan vakioajassa. Tilankäyttö on lineaarinen.
+
+Listan toteuttaa luokka \texttt{MyList}. Sisäiseksi toteutukseksi valittiin tunnusalkiollinen yksisuuntainen linkitetty lista. Tunnussolmuksellisuus tekee toteuksesta helpompaa, ja yksisuuntainen linkitys oli luonteva valinta: ainoastaan poisto-operaatiossa olisi hyötyä kaksisuuntaisesta linkityksestä, eikä siinäkään tapauksessa saavutettaisi lineaarisuutta parempaa suoritusaikaa. Olen lisännyt toteutukseen myös tunnusalkion loppuun, mikä mahdollistaa uuden alkion lisäämisen vakioajassa. Alkion hakeminen tietystä indeksistä, alkion olemassa olon tarkastelu sekä poistaminen suoriutuvat lineaarisessa ajassa, koska yksittäisen alkion hakeminen \texttt{getElement(int arg0)}-metodilla on lineaarinen. Tilankäyttö on lineraarinen.
+
+Sekä \texttt{MySet} että \texttt{MyIterator} on toteutettu Javan rajapintavaatimusten johdosta. Molemmat käyttävät apunaan \texttt{MyList}-luokkaa ja sen toteutusta. \texttt{MySet} toimii kuten \texttt{MyList}, mutta siinä lisääminen tarkistaa, onko alkio jo olemassa tietorakenteessa. Alkion olemassa olon tarkistaminen on $\mathcal{O}(n) = n$, ja lisääminen listaan on $\mathcal{O}(n) = n$, joten alkion lisääminen joukkoon on vakioaikainen operaatio.
+
+\texttt{MyIterator} tallentaa arvot listaan, ja pitää kirjaa viimeksi annetusta indeksistä. Koska listan operaation ovat lineaarisia, on iteraattorin operaation \texttt{next()} sekä \texttt{hasNext()} lineaarisia. Tämä on varsin hidas suoritusaika, periyttämällä kaksisuuntaisen linkitetyn listan nämä operaatiot olisi mahdollista saada vakioaikaisiksi: pidettäisiin tallessa aina alkiota, jossa ollaan nyt ja silloin tämän alkion next ja previous-attribuutit palauttaisivat suoraan oikeita arvoja. Kuitenkin, koska ensisijainen syy toteuttaa  tämä luokka on muiden luokkien riippuvuus, ei luokan optimoimiseen välttämättä ole syytä käyttää liikaa aikaa.
+
+% On syytä huomata, että \texttt{MyHeap}-luokan \texttt{contains}-metodi eroaa esimerkiksi \href{http://docs.oracle.com/javase/6/docs/api/java/util/PriorityQueue.html}{\texttt{PriorityQueue}}-dokumentaation lupaamasta suoritusajasta $\mathcal{O}(n)$. Koska tiedämme, että sisäisen toteutuksen lista on aina järjestyksessä, on mahdollista käyttää puolitushakua, joka takaa suoritukseen ajan $\mathcal{O}(\log n)$.
+
+Sekä \texttt{MyMap} että \texttt{MyList} sisältävät sisäluokan, joita käytetään tallentamaan arvoja. Sisäluokat ovat yksityisiä, eivätkä siis näy luokan ulkopuolelle.
 
 \subsection{Malli}
 \label{model.graph}
@@ -107,6 +118,8 @@ Tässä työssä vertaillaan kahta erilaista heuristista funktiota, Perinteiset 
 \end{itemize}
 
 Yllä $|\mathcal{G}|$ on koko verkon solmujen määrä, $v_x$ nykyinen solmu, $v_g$ tavoitesolmu, $\mathcal{N}$ funktio, joka palauttaa kahden solmun yhteisten alkioiden määrän ja $ \mathcal{E}_w $ funktio, joka palauttaa solmun kaarien painon.
+
+Idea kummassakin heuristiikassa on arvioida solmujen läheisyyttä niiden yhteisten vierussolmujen lukumäärällä. Sosiaalisessa verkostossa\footnote{Klassisesti sosiaalisia verkostoja käsitellään painottomina, mutta ystävyyssuhteiden käsitteellistäminen erilaisina on merkittävä lisä perinteiseen sosiaaliseen verkostoon \cite{nelimarkka}.} tämä tulkittaisiin yhteisten ystävien lukumääränä.
 
 \subsection{Tiedosto-operaatiot}
 \label{io}
